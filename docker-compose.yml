@@ -29,7 +29,7 @@ services:
       - .:/usr/src/app/${PROJECT_NAME:-web}
     command: python3 src/manage.py runserver
     ports:
-      - 8050:8000
+      - 8040:8000
     restart: always
     depends_on:
       - db
@@ -44,14 +44,14 @@ services:
     container_name: ${PROJECT_NAME}-db
     env_file: .env
     ports:
-      - 5433:5432
+      - 5440:5432
 
   redis:
     image: redis:6.2-alpine
     container_name: ${PROJECT_NAME}-redis
     restart: always
     ports:
-      - 6380:6379
+      - 6340:6379
     command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASSWORD}
     volumes:
       - redis_data:/data
