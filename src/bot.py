@@ -5,6 +5,7 @@ from aiogram import Bot, Dispatcher
 from aiogram.contrib.fsm_storage import redis
 
 from settings import config
+from tgbot.misc.register_all_services import register_all_services
 
 
 logger = logging.getLogger(__name__)
@@ -27,7 +28,7 @@ async def main():
     bot['config'] = conf
 
     dp = Dispatcher(bot, storage=storage)
-    config.register_all_services(dp)
+    await register_all_services(dp)
 
     try:
         await dp.start_polling()
