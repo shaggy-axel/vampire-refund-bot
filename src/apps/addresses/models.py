@@ -26,7 +26,6 @@ class Address(models.Model):
     )
     used_at = models.DateTimeField(null=True, blank=True)
 
-
     class Meta:
         db_table = 'addresses'
         verbose_name = 'Адрес'
