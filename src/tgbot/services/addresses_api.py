@@ -69,3 +69,4 @@ def update_address(status: str = "used"):
     used_at = None
     if status == "used":
         used_at = f"{datetime.now():%Y-%m-%d %H:%M}"
+    return used_at

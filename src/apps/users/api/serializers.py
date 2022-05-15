@@ -6,7 +6,7 @@ from apps.users.models import TelegramUser
 class TelegramUserRetrieveSerializer(serializers.ModelSerializer):
     class Meta:
         model = TelegramUser
-        fields = ('telegram_id',)
+        fields = ('telegram_id', 'username')
 
 
 class TelegramUserCreateSerializer(serializers.ModelSerializer):

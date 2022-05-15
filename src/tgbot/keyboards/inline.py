@@ -71,7 +71,7 @@ def get_list_of_addresses(data, current_page, status) -> str:
     """
     paginator = InlineKeyboardPaginator(
         page_count=count_pages(data), current_page=current_page,
-        data_pattern=f'addresses#{status}#'+'{page}')
+        data_pattern=(f'addresses#{status}#' + '{page}'))
     return fill_paginator(
         data=data, data_fields=("name", "city"),
         callback_data_prefix="address_page", callback_data_field="id",
