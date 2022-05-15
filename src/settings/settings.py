@@ -15,12 +15,9 @@ POSTGRES_HOST = "db"
 POSTGRES_PORT = 5432
 
 # REDIS
-REDIS_HOST = '0.0.0.0'
-REDIS_PORT = 6340
+REDIS_HOST = os.environ.get('REDIS_HOST')
+REDIS_PORT = int(os.environ.get('REDIS_PORT'))
 REDIS_PASSWORD = os.environ.get('REDIS_PASSWORD')
-# REDIS_HOST = os.environ.get('REDIS_HOST')
-# REDIS_PORT = int(os.environ.get('REDIS_PORT'))
-# REDIS_PASSWORD = os.environ.get('REDIS_PASSWORD')
 
 # Backend Settings
 BASE_DIR = Path(__file__).resolve().parent.parent
