@@ -19,3 +19,4 @@ REDIS_PASSWORD=somesuperhardpassword
 # DJANGO
 SECRET_KEY=django-super-secret-key
 DEBUG=leave-blank-if-want-to-debug-false
+WEB_PORT=8000
