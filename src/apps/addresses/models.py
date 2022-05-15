@@ -8,7 +8,7 @@ class Address(models.Model):
     city = models.CharField(max_length=128)
     state = models.CharField(max_length=128)
     zip_code = models.PositiveIntegerField()
-    phone = models.CharField(max_length=20)
+    phone = models.CharField(max_length=40)
 
     ADDRESS_STATUS_CHOICES = (
         ('used', 'Used'),
