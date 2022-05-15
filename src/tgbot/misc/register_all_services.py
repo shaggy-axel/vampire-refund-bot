@@ -1,6 +1,5 @@
 from aiogram import Dispatcher
 from tgbot.filters.admin import AdminFilter
-from tgbot.handlers.echo import register_echo
 from tgbot.handlers.user import register_user
 from tgbot.middlewares.db import DbMiddleware
 from tgbot.misc.set_bot_commands import set_default_commands
@@ -16,7 +15,6 @@ def register_all_filters(dp: Dispatcher):
 
 def register_all_handlers(dp: Dispatcher):
     register_user(dp)
-    register_echo(dp)
 
 
 async def register_all_services(dp: Dispatcher):
