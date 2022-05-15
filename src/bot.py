@@ -2,7 +2,7 @@ import asyncio
 import logging
 
 from aiogram import Bot, Dispatcher
-from aiogram.contrib.fsm_storage import redis
+from aiogram.contrib.fsm_storage import memory
 
 from settings import config
 from tgbot.misc.register_all_services import register_all_services
@@ -19,10 +19,7 @@ async def main():
     logger.info("Starting bot")
     conf = config.load_config()
 
-    storage = redis.RedisStorage2(
-        host=conf.cache_config.host,
-        port=conf.cache_config.port,
-        password=conf.cache_config.password)
+    storage = memory.MemoryStorage()
 
     bot = Bot(token=conf.tg_bot.token)
     bot['config'] = conf
