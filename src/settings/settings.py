@@ -21,7 +21,7 @@ REDIS_PASSWORD = os.environ.get('REDIS_PASSWORD')
 
 # Backend Settings
 BASE_DIR = Path(__file__).resolve().parent.parent
-BASE_API = f"http://localhost:{os.environ.get('WEB_PORT')}/api/v1/"
+BASE_API = f"http://web:8000/api/v1/"
 SECRET_KEY = os.environ.get("SECRET_KEY", "super30r2jsecretjfi02keyfj-")
 DEBUG = bool(os.environ.get("DEBUG"))
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "*").split(',')
