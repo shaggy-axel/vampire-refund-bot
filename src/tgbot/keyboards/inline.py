@@ -36,7 +36,7 @@ def profile_keyboard() -> InlineKeyboardMarkup:
         InlineKeyboardButton("history", callback_data="profile#history"),
         InlineKeyboardButton("change status", callback_data="profile#change_status"),
     )
-    keyboard.add(InlineKeyboardButton("menu", callback_data="profile#menu"))
+    keyboard.add(InlineKeyboardButton("menu", callback_data="menu"))
     return keyboard
 
 

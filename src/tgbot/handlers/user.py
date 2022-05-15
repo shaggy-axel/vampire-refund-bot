@@ -1,9 +1,8 @@
 from aiogram import Dispatcher, types
 
 from tgbot.keyboards.inline import (
-    get_info_keyboard, get_list_of_addresses, menu_keyboard)
-from tgbot.services.telegram_user_api import sign_up_user
-from tgbot.services import addresses_api
+    get_info_keyboard, get_list_of_addresses, menu_keyboard, profile_keyboard)
+from tgbot.services import addresses_api, telegram_user_api
 
 
 async def back_to_menu(callback: types.CallbackQuery):
@@ -18,7 +17,7 @@ async def user_start(message: types.Message):
         pass
     elif "start" in message.get_command():
         text = "Welcome!\n" + text
-        await sign_up_user(message.from_user)
+        await telegram_user_api.sign_up_user(message.from_user)
 
     keyboard = menu_keyboard()
     await message.bot.send_message(message.from_user.id, text, reply_markup=keyboard)
@@ -26,6 +25,15 @@ async def user_start(message: types.Message):
         message.chat.id, message.message_id
     )
 
+
+async def get_profile(callback: types.CallbackQuery):
+    user = await telegram_user_api.get_user(callback.from_user)
+    text = f"{user['telegram_id']} | {user['username']}"
+    await callback.bot.send_message(
+        callback.from_user.id, text=text, reply_markup=profile_keyboard())
+    await callback.bot.delete_message(
+        callback.from_user.id, callback.message.message_id,
+    )
 
 
 async def get_info(callback: types.CallbackQuery):
@@ -60,6 +68,8 @@ def register_user(dp: Dispatcher):
     dp.register_message_handler(user_start, commands=["start", "menu"], state="*")
     dp.register_callback_query_handler(
         back_to_menu, lambda callback: callback.data == 'menu')
+    dp.register_callback_query_handler(
+        get_profile, lambda callback: callback.data == 'menu#profile', state="*")
     dp.register_callback_query_handler(
         get_info, lambda callback: callback.data == 'menu#get_info', state="*")
     dp.register_callback_query_handler(

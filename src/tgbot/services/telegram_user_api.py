@@ -13,3 +13,9 @@ async def sign_up_user(user: User):
     }
     async with aiohttp.ClientSession() as session:
         await session.post(f"{BASE_API}users/", data=data)
+
+
+async def get_user(user: User):
+    async with aiohttp.ClientSession() as session:
+        response = await session.get(f'{BASE_API}users/{user.id}')
+    return await response.json()
