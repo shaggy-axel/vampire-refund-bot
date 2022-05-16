@@ -47,14 +47,23 @@ async def get_profile(callback: types.CallbackQuery):
 
 
 async def get_info(callback: types.CallbackQuery):
+    data = await telegram_user_api.get_user(callback.from_user)
+    user = telegram_user_api.serialize_user(data)
     text = (
         f"{callback.from_user.first_name}, please check our price. It's okay?\n\n"
         "Receive the parcel – $80\n"
         "CDEK ~ $25\n\n"
         "RU Bank of Russia official exchange rate: 68.84"
     )
+    if user.current_address:
+        text = (
+            f"⚠️ If you want to get a new address then"
+            "first update the status of the current one! ⚠️"
+        )
     await callback.bot.send_message(
-        callback.from_user.id, text, reply_markup=get_info_keyboard())
+        callback.from_user.id, text,
+        reply_markup=get_info_keyboard(bool(user.current_address)),
+        parse_mode='Markdown')
     await callback.bot.delete_message(
         callback.message.chat.id, callback.message.message_id
     )
