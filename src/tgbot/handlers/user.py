@@ -1,7 +1,8 @@
 from aiogram import Dispatcher, types
 
 from tgbot.keyboards.inline import (
-    address_page, back_to_menu_button, get_info_keyboard, get_list_of_addresses, menu_keyboard, profile_keyboard)
+    address_page, back_to_menu_button, get_info_keyboard,
+    get_list_of_addresses, menu_keyboard, profile_keyboard)
 from tgbot.services import addresses_api, telegram_user_api
 
 
@@ -37,7 +38,7 @@ async def get_profile(callback: types.CallbackQuery):
             f"{address.name}, {address.phone}, {address.city}"
         )
     else:
-        text += f"No current address"
+        text += "No current address"
 
     await callback.bot.send_message(
         callback.from_user.id, text=text, reply_markup=profile_keyboard())
@@ -57,7 +58,7 @@ async def get_info(callback: types.CallbackQuery):
     )
     if user.current_address:
         text = (
-            f"⚠️ If you want to get a new address then"
+            "⚠️ If you want to get a new address then"
             "first update the status of the current one! ⚠️"
         )
     await callback.bot.send_message(
@@ -98,7 +99,7 @@ async def get_address(callback: types.CallbackQuery):
         f"**Phone number**: `{address_data.phone}`\n\n"
     )
     if address_data.using_now:
-        text += f"This address now using"
+        text += "This address now using"
 
     await callback.bot.send_message(
         callback.from_user.id, text,
@@ -140,4 +141,3 @@ def register_user(dp: Dispatcher):
         use_address, lambda callback: callback.data.split('#')[0] == 'use_address')
     dp.register_callback_query_handler(
         get_contacts, lambda callback: 'get_contacts' in callback.data)
-
