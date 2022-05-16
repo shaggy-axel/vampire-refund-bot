@@ -40,17 +40,20 @@ def profile_keyboard() -> InlineKeyboardMarkup:
     return keyboard
 
 
-def get_info_keyboard() -> InlineKeyboardMarkup:
+def get_info_keyboard(have_an_address: bool) -> InlineKeyboardMarkup:
     """
     Return `get info` keyboard with this buttons:
 
     | OK (go to list of addresses) | No Thanks (go to menu) |
     """
     keyboard = InlineKeyboardMarkup()
-    keyboard.add(
-        InlineKeyboardButton("OK", callback_data="addresses#all#1"),
-        InlineKeyboardButton("No, Thanks", callback_data="menu"),
-    )
+    if have_an_address:
+        keyboard.add(InlineKeyboardButton("Menu", callback_data="menu"))
+    else:
+        keyboard.add(
+            InlineKeyboardButton("OK", callback_data="addresses#all#1"),
+            InlineKeyboardButton("No, Thanks", callback_data="menu"),
+        )
     return keyboard
 
 
