@@ -1,7 +1,15 @@
+from typing import NamedTuple
 import aiohttp
 from aiogram.types.user import User
 
 from settings.settings import BASE_API
+
+
+class UserTuple(NamedTuple):
+    telegram_id: int
+    username: str
+    using_now: bool
+    current_address: bool
 
 
 async def sign_up_user(user: User):
@@ -17,5 +25,20 @@ async def sign_up_user(user: User):
 
 async def get_user(user: User):
     async with aiohttp.ClientSession() as session:
-        response = await session.get(f'{BASE_API}users/{user.id}')
+        response = await session.get(f'{BASE_API}users/{user.id}/')
     return await response.json()
+
+
+async def use_address(user: User, current_address: int):
+    async with aiohttp.ClientSession() as session:
+        await session.patch(
+            f'{BASE_API}users/{user.id}/', data={"current_address": current_address})
+
+
+def serialize_user(data: dict):
+    return UserTuple(
+        telegram_id=data['telegram_id'],
+        username=data['username'],
+        using_now=data['using_now'],
+        current_address=data['current_address'],
+    )
