@@ -83,6 +83,31 @@ async def get_addresses(callback: types.CallbackQuery):
     )
 
 
+async def get_address(callback: types.CallbackQuery):
+    address_id = callback.data.split('#')[1]
+    data = await addresses_api.get_address(address_id)
+    address_data = addresses_api.serialize_addresses(data)
+    text = (
+        "⬇️ Your shipping address ⬇️\n"
+        f"**Name**: `{address_data.name}`\n"
+        f"__Line 1__: `{address_data.line_1}`\n"
+        f"__Line 2__: `{address_data.line_2}`\n"
+        f"**City**: `{address_data.city}`\n"
+        f"**State**: `{address_data.state}`\n"
+        f"**ZIP**: `{address_data.zip_code}`\n"
+        f"**Phone number**: `{address_data.phone}`\n\n"
+    )
+    if address_data.using_now:
+        text += f"This address now using"
+
+    await callback.bot.send_message(
+        callback.from_user.id, text,
+        reply_markup=address_page(address_data.id, address_data.using_now),
+        parse_mode='Markdown'
+    )
+    await callback.bot.delete_message(
+        callback.message.chat.id, callback.message.message_id
+    )
 def register_user(dp: Dispatcher):
     dp.register_message_handler(user_start, commands=["start", "menu"], state="*")
     dp.register_callback_query_handler(
