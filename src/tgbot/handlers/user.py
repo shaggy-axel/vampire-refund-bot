@@ -115,6 +115,15 @@ async def use_address(callback: types.CallbackQuery):
     await telegram_user_api.use_address(callback.from_user, address_id)
     await back_to_menu(callback)
 
+
+async def get_contacts(callback: types.CallbackQuery):
+    await callback.bot.send_message(
+        callback.from_user.id, "@dexedrine", reply_markup=back_to_menu_button())
+    await callback.bot.delete_message(
+        callback.from_user.id, callback.message.message_id
+    )
+
+
 def register_user(dp: Dispatcher):
     dp.register_message_handler(user_start, commands=["start", "menu"], state="*")
     dp.register_callback_query_handler(
