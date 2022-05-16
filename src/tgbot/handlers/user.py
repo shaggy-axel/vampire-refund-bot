@@ -134,3 +134,10 @@ def register_user(dp: Dispatcher):
         get_info, lambda callback: callback.data == 'menu#get_info', state="*")
     dp.register_callback_query_handler(
         get_addresses, lambda callback: callback.data.split('#')[0] == 'addresses')
+    dp.register_callback_query_handler(
+        get_address, lambda callback: callback.data.split('#')[0] == 'address_page')
+    dp.register_callback_query_handler(
+        use_address, lambda callback: callback.data.split('#')[0] == 'use_address')
+    dp.register_callback_query_handler(
+        get_contacts, lambda callback: 'get_contacts' in callback.data)
+
