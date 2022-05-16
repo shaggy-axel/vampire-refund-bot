@@ -108,6 +108,13 @@ async def get_address(callback: types.CallbackQuery):
     await callback.bot.delete_message(
         callback.message.chat.id, callback.message.message_id
     )
+
+
+async def use_address(callback: types.CallbackQuery):
+    _, address_id = callback.data.split('#')
+    await telegram_user_api.use_address(callback.from_user, address_id)
+    await back_to_menu(callback)
+
 def register_user(dp: Dispatcher):
     dp.register_message_handler(user_start, commands=["start", "menu"], state="*")
     dp.register_callback_query_handler(
