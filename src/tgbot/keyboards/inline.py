@@ -99,3 +99,9 @@ def address_page(address_id: int, using_now: bool = False) -> InlineKeyboardMark
         InlineKeyboardButton("Menu", callback_data="menu"),
     )
     return keyboard
+
+
+def back_to_menu_button():
+    keyboard = InlineKeyboardMarkup()
+    keyboard.add(InlineKeyboardButton('Menu', callback_data="menu"))
+    return keyboard
