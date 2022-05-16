@@ -18,6 +18,13 @@ class AddressTuple(NamedTuple):
     status: str
     used_by: Optional[int]
     used_at: Optional[Union[str, datetime]]
+    using_now: bool
+
+
+async def get_address(address_id: Union[int, str]):
+    async with aiohttp.ClientSession() as session:
+        response = await session.get(f"{BASE_API}addresses/{address_id}/")
+    return await response.json()
 
 
 async def get_addresses(status: str = "all"):
@@ -46,7 +53,8 @@ def serialize_addresses(data: Union[list[dict], dict]):
             phone=data["phone"],
             status=data["status"],
             used_by=data["used_by"],
-            used_at=data["used_at"]
+            used_at=data["used_at"],
+            using_now=data['using_now'],
         )
     return [
         AddressTuple(
@@ -60,7 +68,8 @@ def serialize_addresses(data: Union[list[dict], dict]):
             phone=address["phone"],
             status=address["status"],
             used_by=address["used_by"],
-            used_at=address["used_at"]
+            used_at=address["used_at"],
+            using_now=address['using_now'],
         ) for address in data
     ]
 
