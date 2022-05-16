@@ -78,10 +78,10 @@ def get_list_of_addresses(data, current_page, status) -> str:
     return fill_paginator(
         data=data, data_fields=("name", "city"),
         callback_data_prefix="address_page", callback_data_field="id",
-        previous_keyboard_callback="menu", paginator=paginator)
+        previous_keyboard_callback="menu", paginator=paginator, without_page_in_callback=True)
 
 
-def address_page(user_have_an_address: bool = False) -> InlineKeyboardMarkup:
+def address_page(address_id: int, using_now: bool = False) -> InlineKeyboardMarkup:
     """
     some description
     If allowed to add address for user (check in db), than add button
@@ -91,10 +91,11 @@ def address_page(user_have_an_address: bool = False) -> InlineKeyboardMarkup:
     """
     keyboard = InlineKeyboardMarkup()
     # check if user have an address
-    if not user_have_an_address:
-        keyboard.add(InlineKeyboardButton('use address', callback_data='address_page#use_address'))
+    if not using_now:
+        keyboard.add(InlineKeyboardButton(
+            'use address', callback_data=f'use_address#{address_id}'))
     keyboard.add(
-        InlineKeyboardButton("OK", callback_data="address_page#back_to_list"),
-        InlineKeyboardButton("No, Thanks", callback_data="address_page#menu"),
+        InlineKeyboardButton("Addresses", callback_data="addresses#all#1"),
+        InlineKeyboardButton("Menu", callback_data="menu"),
     )
     return keyboard
