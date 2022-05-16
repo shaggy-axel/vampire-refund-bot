@@ -34,3 +34,16 @@ class Address(models.Model):
             'name', 'line_1', 'line_2', 'city',
             'state', 'zip_code', 'phone'
         )
+
+
+def update_user(sender, instance, created: bool, **kwargs):
+    if created:
+        return
+
+    if instance.used_by:
+        user = instance.used_by
+        user.current_address = None
+        user.save()
+
+
+models.signals.post_save.connect(update_user, Address)

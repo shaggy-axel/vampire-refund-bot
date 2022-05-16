@@ -9,6 +9,7 @@ from apps.addresses.api.serializers import (
 
 class AddressAPIViewSet(viewsets.ModelViewSet):
     queryset = Address.objects.all()
+    # queryset = Address.objects.filter(status="notused")
 
     def get_serializer_class(self):
         if self.request.method.lower() == 'post':

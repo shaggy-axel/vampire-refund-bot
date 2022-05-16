@@ -4,9 +4,14 @@ from apps.users.models import TelegramUser
 
 
 class TelegramUserRetrieveSerializer(serializers.ModelSerializer):
+    using_now = serializers.SerializerMethodField()
+
     class Meta:
         model = TelegramUser
-        fields = ('telegram_id', 'username')
+        fields = ('telegram_id', 'username', 'using_now', 'current_address')
+
+    def get_using_now(self, obj):
+        return bool(obj.current_address)
 
 
 class TelegramUserCreateSerializer(serializers.ModelSerializer):
@@ -23,4 +28,4 @@ class TelegramUserCreateSerializer(serializers.ModelSerializer):
 class TelegramUserUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = TelegramUser
-        fields = ('username',)
+        fields = ('current_address',)

@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.db import models
 
 
@@ -13,3 +14,18 @@ class TelegramUser(models.Model):
         db_table = 'telegram_users'
         verbose_name = 'Пользователь telegram'
         verbose_name_plural = 'Пользователи telegram'
+
+
+def update_address(sender, instance, created: bool, **kwargs):
+    if created:
+        return
+
+    if instance.current_address:
+        address = instance.current_address
+        address.status = 'used'
+        address.used_by = instance
+        address.used_at = datetime.now()
+        address.save()
+
+
+models.signals.post_save.connect(update_address, TelegramUser)
