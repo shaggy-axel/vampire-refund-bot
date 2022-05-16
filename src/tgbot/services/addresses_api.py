@@ -29,7 +29,9 @@ async def get_address(address_id: Union[int, str]):
 
 async def get_addresses(status: str = "all"):
     async with aiohttp.ClientSession() as session:
-        if status == 'used':
+        if status == 'using':
+            response = await session.get(f"{BASE_API}addresses/?status=using")
+        elif status == 'used':
             response = await session.get(f"{BASE_API}addresses/?status=used")
         elif status == 'notused':
             response = await session.get(f"{BASE_API}addresses/?status=notused")
@@ -38,6 +40,12 @@ async def get_addresses(status: str = "all"):
         else:
             response = await session.get(f"{BASE_API}addresses/")
     return await response.json()
+
+
+async def change_status(address_id: int, status: str = "used"):
+    async with aiohttp.ClientSession() as session:
+        await session.patch(
+            f'{BASE_API}addresses/{address_id}/', data={"status": status})
 
 
 def serialize_addresses(data: Union[list[dict], dict]):
@@ -72,10 +80,3 @@ def serialize_addresses(data: Union[list[dict], dict]):
             using_now=address['using_now'],
         ) for address in data
     ]
-
-
-def update_address(status: str = "used"):
-    used_at = None
-    if status == "used":
-        used_at = f"{datetime.now():%Y-%m-%d %H:%M}"
-    return used_at

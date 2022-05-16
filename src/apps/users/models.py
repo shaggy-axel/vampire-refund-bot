@@ -22,7 +22,7 @@ def update_address(sender, instance, created: bool, **kwargs):
 
     if instance.current_address:
         address = instance.current_address
-        address.status = 'used'
+        address.status = 'using'
         address.used_by = instance
         address.used_at = datetime.now()
         address.save()

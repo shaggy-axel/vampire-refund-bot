@@ -11,14 +11,15 @@ class Address(models.Model):
     phone = models.CharField(max_length=40)
 
     ADDRESS_STATUS_CHOICES = (
-        ('used', 'Used'),
         ('notused', 'Not Used'),
+        ('using', 'Using'),
+        ('used', 'Used'),
         ('hold', 'Hold'),
     )
 
     status = models.CharField(
         max_length=20, choices=ADDRESS_STATUS_CHOICES,
-        default=ADDRESS_STATUS_CHOICES[1][0]
+        default=ADDRESS_STATUS_CHOICES[0][0]
     )
     used_by = models.ForeignKey(
         'users.TelegramUser', on_delete=models.SET_NULL,
