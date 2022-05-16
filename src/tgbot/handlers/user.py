@@ -1,7 +1,7 @@
 from aiogram import Dispatcher, types
 
 from tgbot.keyboards.inline import (
-    get_info_keyboard, get_list_of_addresses, menu_keyboard, profile_keyboard)
+    address_page, back_to_menu_button, get_info_keyboard, get_list_of_addresses, menu_keyboard, profile_keyboard)
 from tgbot.services import addresses_api, telegram_user_api
 
 
@@ -27,8 +27,18 @@ async def user_start(message: types.Message):
 
 
 async def get_profile(callback: types.CallbackQuery):
-    user = await telegram_user_api.get_user(callback.from_user)
-    text = f"{user['telegram_id']} | {user['username']}"
+    data = await telegram_user_api.get_user(callback.from_user)
+    user = telegram_user_api.serialize_user(data)
+    text = f"{user.telegram_id} | {user.username}\n"
+    if user.current_address:
+        data = await addresses_api.get_address(user.current_address)
+        address = addresses_api.serialize_addresses(data)
+        text += (
+            f"{address.name}, {address.phone}, {address.city}"
+        )
+    else:
+        text += f"No current address"
+
     await callback.bot.send_message(
         callback.from_user.id, text=text, reply_markup=profile_keyboard())
     await callback.bot.delete_message(
