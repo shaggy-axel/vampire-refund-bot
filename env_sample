@@ -2,7 +2,6 @@
 BOT_NAME=template
 BOT_TOKEN=123456:ABCDEF_abcdef
 ADMINS=123456,654321
-USE_REDIS=False
 
 # DATABASE
 POSTGRES_DB=teplate-db
@@ -20,3 +19,4 @@ REDIS_PASSWORD=somesuperhardpassword
 # DJANGO
 SECRET_KEY=django-super-secret-key
 DEBUG=leave-blank-if-want-to-debug-false
+WEB_PORT=8000

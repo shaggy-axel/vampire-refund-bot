@@ -2,7 +2,6 @@ version: '3.3'
 
 services:
   bot:
-    image: python:3.9
     container_name: ${PROJECT_NAME}-bot
     build:
       dockerfile: Dockerfile.bot
@@ -21,20 +20,17 @@ services:
   web:
     image: python:3.9
     container_name: ${PROJECT_NAME}-web
-    build:
-      dockerfile: Dockerfile.web
-      context: .
-    working_dir: "/usr/src/app/${PROJECT_NAME:-web}"
     volumes:
-      - .:/usr/src/app/${PROJECT_NAME:-web}
-    command: python3 src/manage.py runserver
+      - .:/usr/src/app/${PROJECT_NAME}
+    working_dir: "/usr/src/app/${PROJECT_NAME}"
     ports:
-      - 8050:8000
+      - "0.0.0.0:${WEB_PORT}:8000"
     restart: always
     depends_on:
       - db
       - redis
     env_file: .env
+    command: /bin/bash -c 'scripts/run-server.sh'
 
   db:
     image: postgres:12.0-alpine
@@ -44,14 +40,14 @@ services:
     container_name: ${PROJECT_NAME}-db
     env_file: .env
     ports:
-      - 5433:5432
+      - 5440:5432
 
   redis:
     image: redis:6.2-alpine
     container_name: ${PROJECT_NAME}-redis
     restart: always
     ports:
-      - 6380:6379
+      - 6340:6379
     command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASSWORD}
     volumes:
       - redis_data:/data

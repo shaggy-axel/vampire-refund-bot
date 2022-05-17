@@ -21,6 +21,7 @@ REDIS_PASSWORD = os.environ.get('REDIS_PASSWORD')
 
 # Backend Settings
 BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_API = "http://web:8000/api/v1/"
 SECRET_KEY = os.environ.get("SECRET_KEY", "super30r2jsecretjfi02keyfj-")
 DEBUG = bool(os.environ.get("DEBUG"))
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "*").split(',')
@@ -33,6 +34,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'rest_framework',
+
+    'apps.addresses',
+    'apps.users',
 ]
 
 MIDDLEWARE = [
@@ -96,7 +102,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Moscow'
 USE_I18N = True
 USE_TZ = True
 

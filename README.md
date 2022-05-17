@@ -9,6 +9,7 @@ cat env_sample > .env
 
 docker-compose build
 docker-compose up -d
+docker-compose exec web sh -c "python3 src/manage.py migrate"
 ```
 
 ## Database migrations
