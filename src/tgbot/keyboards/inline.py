@@ -14,14 +14,14 @@ def menu_keyboard() -> InlineKeyboardMarkup:
     """
     keyboard = InlineKeyboardMarkup()
     keyboard.add(
-        InlineKeyboardButton("get info", callback_data="menu#get_info"),
-        InlineKeyboardButton("profile", callback_data="menu#profile"),
+        InlineKeyboardButton("📃 Get info", callback_data="menu#get_info"),
+        InlineKeyboardButton("👤 Profile", callback_data="menu#profile"),
     )
     keyboard.add(InlineKeyboardButton("get contacts", callback_data="menu#get_contacts"))
     return keyboard
 
 
-def profile_keyboard() -> InlineKeyboardMarkup:
+def profile_keyboard(have_address: bool = False) -> InlineKeyboardMarkup:
     """
     some message text with current address
 
@@ -32,11 +32,16 @@ def profile_keyboard() -> InlineKeyboardMarkup:
     |       back to menu      |
     """
     keyboard = InlineKeyboardMarkup()
-    keyboard.add(
-        InlineKeyboardButton("history", callback_data="profile#history"),
-        InlineKeyboardButton("change status", callback_data="profile#change_status"),
-    )
-    keyboard.add(InlineKeyboardButton("menu", callback_data="menu"))
+    if have_address:
+        keyboard.add(
+            # InlineKeyboardButton("history", callback_data="history"),
+            InlineKeyboardButton("change status", callback_data="change_status"),
+        )
+    # else:
+    #     keyboard.add(
+    #         InlineKeyboardButton("history", callback_data="history"),
+    #     )
+    keyboard.add(InlineKeyboardButton("🔙 Menu", callback_data="menu"))
     return keyboard
 
 
@@ -48,11 +53,11 @@ def get_info_keyboard(have_an_address: bool) -> InlineKeyboardMarkup:
     """
     keyboard = InlineKeyboardMarkup()
     if have_an_address:
-        keyboard.add(InlineKeyboardButton("Menu", callback_data="menu"))
+        keyboard.add(InlineKeyboardButton("🔙 Menu", callback_data="menu"))
     else:
         keyboard.add(
-            InlineKeyboardButton("OK", callback_data="addresses#all#1"),
-            InlineKeyboardButton("No, Thanks", callback_data="menu"),
+            InlineKeyboardButton("👌 OK", callback_data="addresses#all#1"),
+            InlineKeyboardButton("🙅‍♂️ No, Thanks", callback_data="menu"),
         )
     return keyboard
 
@@ -95,13 +100,22 @@ def address_page(address_id: int, using_now: bool = False) -> InlineKeyboardMark
         keyboard.add(InlineKeyboardButton(
             'use address', callback_data=f'use_address#{address_id}'))
     keyboard.add(
-        InlineKeyboardButton("Addresses", callback_data="addresses#all#1"),
-        InlineKeyboardButton("Menu", callback_data="menu"),
+        InlineKeyboardButton("🔙 Addresses", callback_data="addresses#all#1"),
+        InlineKeyboardButton("🔙 Menu", callback_data="menu"),
     )
     return keyboard
 
 
 def back_to_menu_button():
     keyboard = InlineKeyboardMarkup()
-    keyboard.add(InlineKeyboardButton('Menu', callback_data="menu"))
+    keyboard.add(InlineKeyboardButton('🔙 Menu', callback_data="menu"))
+    return keyboard
+
+
+def get_status_keyboard():
+    keyboard = InlineKeyboardMarkup()
+    keyboard.add(
+        InlineKeyboardButton('🗑 Used', callback_data="status#used"),
+        InlineKeyboardButton('🥶 Hold', callback_data="status#hold"),
+    )
     return keyboard

@@ -2,7 +2,7 @@ from aiogram import Dispatcher, types
 
 from tgbot.keyboards.inline import (
     address_page, back_to_menu_button, get_info_keyboard,
-    get_list_of_addresses, menu_keyboard, profile_keyboard)
+    get_list_of_addresses, get_status_keyboard, menu_keyboard, profile_keyboard)
 from tgbot.services import addresses_api, telegram_user_api
 
 
@@ -34,14 +34,22 @@ async def get_profile(callback: types.CallbackQuery):
     if user.current_address:
         data = await addresses_api.get_address(user.current_address)
         address = addresses_api.serialize_addresses(data)
-        text += (
-            f"{address.name}, {address.phone}, {address.city}"
+        text = (
+            "⬇️ Your shipping address ⬇️\n"
+            f"**Name**: `{address.name}`\n"
+            f"__Line 1__: `{address.line_1}`\n"
+            f"__Line 2__: `{address.line_2}`\n"
+            f"**City**: `{address.city}`\n"
+            f"**State**: `{address.state}`\n"
+            f"**ZIP**: `{address.zip_code}`\n"
+            f"**Phone number**: `{address.phone}`\n\n"
         )
     else:
         text += "No current address"
 
     await callback.bot.send_message(
-        callback.from_user.id, text=text, reply_markup=profile_keyboard())
+        callback.from_user.id, text=text, parse_mode='Markdown',
+        reply_markup=profile_keyboard(bool(user.current_address)))
     await callback.bot.delete_message(
         callback.from_user.id, callback.message.message_id,
     )
@@ -89,7 +97,7 @@ async def get_address(callback: types.CallbackQuery):
     data = await addresses_api.get_address(address_id)
     address_data = addresses_api.serialize_addresses(data)
     text = (
-        "⬇️ Your shipping address ⬇️\n"
+        "⬇️ Shipping address ⬇️\n"
         f"**Name**: `{address_data.name}`\n"
         f"__Line 1__: `{address_data.line_1}`\n"
         f"__Line 2__: `{address_data.line_2}`\n"
@@ -117,6 +125,22 @@ async def use_address(callback: types.CallbackQuery):
     await back_to_menu(callback)
 
 
+async def change_status_choice(callback: types.CallbackQuery):
+    keyboard = get_status_keyboard()
+    text = "choice required status"
+    await callback.bot.send_message(callback.from_user.id, text, reply_markup=keyboard)
+    await callback.bot.delete_message(callback.from_user.id, callback.message.message_id)
+
+
+async def change_status_send(callback: types.CallbackQuery):
+    status = callback.data.split('#')[1]
+    data = await telegram_user_api.get_user(callback.from_user)
+    user = telegram_user_api.serialize_user(data)
+
+    await addresses_api.change_status(address_id=user.current_address, status=status)
+    await back_to_menu(callback)
+
+
 async def get_contacts(callback: types.CallbackQuery):
     await callback.bot.send_message(
         callback.from_user.id, "@dexedrine", reply_markup=back_to_menu_button())
@@ -139,5 +163,9 @@ def register_user(dp: Dispatcher):
         get_address, lambda callback: callback.data.split('#')[0] == 'address_page')
     dp.register_callback_query_handler(
         use_address, lambda callback: callback.data.split('#')[0] == 'use_address')
+    dp.register_callback_query_handler(
+        change_status_choice, lambda callback: 'change_status' == callback.data)
+    dp.register_callback_query_handler(
+        change_status_send, lambda callback: 'status' == callback.data.split('#')[0])
     dp.register_callback_query_handler(
         get_contacts, lambda callback: 'get_contacts' in callback.data)

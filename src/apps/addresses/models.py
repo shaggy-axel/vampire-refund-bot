@@ -38,7 +38,7 @@ class Address(models.Model):
 
 
 def update_user(sender, instance, created: bool, **kwargs):
-    if created:
+    if created or instance.status == 'using':
         return
 
     if instance.used_by:
