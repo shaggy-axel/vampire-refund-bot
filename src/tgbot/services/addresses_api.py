@@ -13,7 +13,7 @@ class AddressTuple(NamedTuple):
     line_2: str
     city: str
     state: str
-    zip_code: int
+    zip_code: str
     phone: str
     status: str
     used_by: Optional[int]
