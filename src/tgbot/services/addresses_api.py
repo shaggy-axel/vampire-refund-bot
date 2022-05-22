@@ -38,7 +38,7 @@ async def get_addresses(status: str = "all"):
         elif status == 'hold':
             response = await session.get(f"{BASE_API}addresses/?status=hold")
         else:
-            response = await session.get(f"{BASE_API}addresses/")
+            response = await session.get(f"{BASE_API}address/")
     return await response.json()
 
 
