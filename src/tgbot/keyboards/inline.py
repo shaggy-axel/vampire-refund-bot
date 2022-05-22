@@ -1,10 +1,13 @@
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.types import (
+    InlineKeyboardMarkup, InlineKeyboardButton,
+    ReplyKeyboardMarkup, KeyboardButton,
+)
 
 from tgbot.keyboards.paginator import InlineKeyboardPaginator, fill_paginator
 from tgbot.misc.useful_functions import count_pages
 
 
-def menu_keyboard() -> InlineKeyboardMarkup:
+def menu_keyboard() -> ReplyKeyboardMarkup:
     """
     Return a menu keyboard with this buttons:
 
@@ -12,12 +15,12 @@ def menu_keyboard() -> InlineKeyboardMarkup:
     |--------------------|
     |     get contacts   |
     """
-    keyboard = InlineKeyboardMarkup()
+    keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
     keyboard.add(
-        InlineKeyboardButton("📃 Get info", callback_data="menu#get_info"),
-        InlineKeyboardButton("👤 Profile", callback_data="menu#profile"),
+        KeyboardButton("📃 Get Info"),
+        KeyboardButton("👤 Profile"),
     )
-    keyboard.add(InlineKeyboardButton("get contacts", callback_data="menu#get_contacts"))
+    keyboard.add(KeyboardButton("Contacts"))
     return keyboard
 
 
@@ -34,14 +37,8 @@ def profile_keyboard(have_address: bool = False) -> InlineKeyboardMarkup:
     keyboard = InlineKeyboardMarkup()
     if have_address:
         keyboard.add(
-            # InlineKeyboardButton("history", callback_data="history"),
             InlineKeyboardButton("change status", callback_data="change_status"),
         )
-    # else:
-    #     keyboard.add(
-    #         InlineKeyboardButton("history", callback_data="history"),
-    #     )
-    keyboard.add(InlineKeyboardButton("🔙 Menu", callback_data="menu"))
     return keyboard
 
 
@@ -52,11 +49,9 @@ def get_info_keyboard(have_an_address: bool) -> InlineKeyboardMarkup:
     | OK (go to list of addresses) | No Thanks (go to menu) |
     """
     keyboard = InlineKeyboardMarkup()
-    if have_an_address:
-        keyboard.add(InlineKeyboardButton("🔙 Menu", callback_data="menu"))
-    else:
+    if not have_an_address:
         keyboard.add(
-            InlineKeyboardButton("👌 OK", callback_data="addresses#all#1"),
+            InlineKeyboardButton("👌 OK", callback_data="get_address"),
             InlineKeyboardButton("🙅‍♂️ No, Thanks", callback_data="menu"),
         )
     return keyboard
