@@ -2,6 +2,7 @@ from aiogram.types import (
     InlineKeyboardMarkup, InlineKeyboardButton,
     ReplyKeyboardMarkup, KeyboardButton,
 )
+from settings.settings import BUTTONS_TEXT
 
 from tgbot.keyboards.paginator import InlineKeyboardPaginator, fill_paginator
 from tgbot.misc.useful_functions import count_pages
@@ -17,10 +18,10 @@ def menu_keyboard() -> ReplyKeyboardMarkup:
     """
     keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
     keyboard.add(
-        KeyboardButton("📃 Get Info"),
-        KeyboardButton("👤 Profile"),
+        KeyboardButton(BUTTONS_TEXT['GET_INFO']),
+        KeyboardButton(BUTTONS_TEXT['PROFILE']),
     )
-    keyboard.add(KeyboardButton("Contacts"))
+    keyboard.add(KeyboardButton(BUTTONS_TEXT["CONTACTS"]))
     return keyboard
 
 
@@ -37,7 +38,7 @@ def profile_keyboard(have_address: bool = False) -> InlineKeyboardMarkup:
     keyboard = InlineKeyboardMarkup()
     if have_address:
         keyboard.add(
-            InlineKeyboardButton("change status", callback_data="change_status"),
+            InlineKeyboardButton(BUTTONS_TEXT["CHANGE_STATUS"], callback_data="change_status"),
         )
     return keyboard
 
@@ -51,8 +52,8 @@ def get_info_keyboard(have_an_address: bool) -> InlineKeyboardMarkup:
     keyboard = InlineKeyboardMarkup()
     if not have_an_address:
         keyboard.add(
-            InlineKeyboardButton("👌 OK", callback_data="get_address"),
-            InlineKeyboardButton("🙅‍♂️ No, Thanks", callback_data="menu"),
+            InlineKeyboardButton(BUTTONS_TEXT["GET_INFO_OK"], callback_data="get_address"),
+            InlineKeyboardButton(BUTTONS_TEXT["GET_INFO_NO_THANKS"], callback_data="menu"),
         )
     return keyboard
 
@@ -110,7 +111,7 @@ def back_to_menu_button():
 def get_status_keyboard():
     keyboard = InlineKeyboardMarkup()
     keyboard.add(
-        InlineKeyboardButton('🗑 Used', callback_data="status#used"),
-        InlineKeyboardButton('🥶 Hold', callback_data="status#hold"),
+        InlineKeyboardButton(BUTTONS_TEXT["STATUS_USED"], callback_data="status#used"),
+        InlineKeyboardButton(BUTTONS_TEXT['STATUS_HOLD'], callback_data="status#hold"),
     )
     return keyboard

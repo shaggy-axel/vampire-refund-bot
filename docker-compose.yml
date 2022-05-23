@@ -9,6 +9,8 @@ services:
     working_dir: "/usr/src/app/${BOT_NAME:-tg_bot}"
     volumes:
       - .:/usr/src/app/${BOT_NAME:-tg_bot}
+    ports:
+      - "3040:3000"
     command: python3 src/bot.py
     restart: always
     depends_on:
@@ -24,7 +26,7 @@ services:
       - .:/usr/src/app/${PROJECT_NAME}
     working_dir: "/usr/src/app/${PROJECT_NAME}"
     ports:
-      - "0.0.0.0:${WEB_PORT}:8000"
+      - "8040:8000"
     restart: always
     depends_on:
       - db
@@ -51,6 +53,10 @@ services:
     command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASSWORD}
     volumes:
       - redis_data:/data
+
+networks:
+  tg_bot:
+    driver: bridge
 
 volumes:
   postgres_data:
