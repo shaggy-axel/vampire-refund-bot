@@ -11,9 +11,8 @@ MESSAGE_TEXT = {
     "MENU_COMMAND": "Please select an action",
     "GET_CONTACTS_COMMAND": "@dexedrine",
 
-    "PROFILE_IF_HAVE_NO_ADDRESS": "@{username} have no address",
+    "PROFILE_IF_HAVE_NO_ADDRESS": "you have no address",
     "PROFILE_IF_HAVE_ADDRESS": (
-        "@{username}\n"
         "Name: {address_name}\n"
         "Line 1: {address_line_1}\n"
         "Line 2: {address_line_2}\n"
