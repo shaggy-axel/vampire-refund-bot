@@ -18,7 +18,12 @@ class AddressAPIViewSet(viewsets.ModelViewSet):
 
 class GetAddressAPI(views.APIView):
     def get(self, request):
-        # raise ValueError
-        obj = Address.objects.filter(status='notused').first()
-        data = AddressRetrieveUpdateSerializer(obj).data
-        return response.Response(data, status.HTTP_200_OK)
+        obj = Address.objects.filter(status='notused')
+        if obj:
+            obj = obj.first()
+            data = AddressRetrieveUpdateSerializer(obj).data
+            return response.Response(data, status.HTTP_200_OK)
+        return response.Response(
+            {"error": "does not exists `not used` address"},
+            status.HTTP_404_NOT_FOUND
+        )

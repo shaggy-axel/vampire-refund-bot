@@ -33,9 +33,12 @@ def use_address(user: User, current_address: int):
 
 
 def serialize_user(data: dict):
-    return UserTuple(
-        telegram_id=data['telegram_id'],
-        username=data['username'],
-        using_now=data['using_now'],
-        current_address=data['current_address'],
-    )
+    try:
+        return UserTuple(
+            telegram_id=data['telegram_id'],
+            username=data['username'],
+            using_now=data['using_now'],
+            current_address=data['current_address'],
+        )
+    except KeyError:
+        raise KeyError(str(data))

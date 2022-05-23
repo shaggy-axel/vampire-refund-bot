@@ -31,32 +31,20 @@ async def user_start(message: types.Message):
 async def get_profile(message: types.Message):
     data = telegram_user_api.get_user(message.from_user)
     user = telegram_user_api.serialize_user(data)
-    text = f"@{user.username}\n"
     if user.current_address:
         data = addresses_api.get_address(user.current_address)
         address = addresses_api.serialize_addresses(data)
-        text = (
-            f"Name: `{address.name}`\n"
-            f"Line 1: `{address.line_1}`\n"
-            f"Line 2: `{address.line_2}`\n"
-            f"City: `{address.city}`\n"
-            f"State: `{address.state}`\n"
-            f"ZIP: `{address.zip_code}`\n"
-            f"Phone number: `{address.phone}`"
-        )
-        MESSAGE_TEXT["PROFILE_IF_HAVE_ADDRESS"].format(
+        text = MESSAGE_TEXT["PROFILE_IF_HAVE_ADDRESS"].format(
             username=user.username, address_name=address.name,
             address_line_1=address.line_1, address_line_2=address.line_2,
             address_city=address.city, address_state=address.state,
             address_zip_code=address.zip_code, address_phone=address.phone
         )
-        parse_mode = "Markdown"
     else:
-        text = MESSAGE_TEXT["PROFILE_IF_HAVE_NO_ADDRESS"].format(user.username)
-        parse_mode = None
+        text = MESSAGE_TEXT["PROFILE_IF_HAVE_NO_ADDRESS"].format(username=user.username)
 
     await message.bot.send_message(
-        message.from_user.id, text, parse_mode=parse_mode,
+        message.from_user.id, text,
         reply_markup=profile_keyboard(bool(user.current_address)))
     await message.bot.delete_message(
         message.from_user.id, message.message_id,
@@ -82,7 +70,8 @@ async def get_info(message: types.Message):
 async def get_addresses(callback: types.CallbackQuery):
     data = addresses_api.get_addresses()
     addresses = addresses_api.serialize_addresses(data)
-    await telegram_user_api.use_address(callback.from_user, addresses.id)
+    telegram_user_api.use_address(callback.from_user, addresses.id)
+    callback.message.from_user = callback.from_user
     await get_profile(callback.message)
 
 

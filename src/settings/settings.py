@@ -14,13 +14,13 @@ MESSAGE_TEXT = {
     "PROFILE_IF_HAVE_NO_ADDRESS": "@{username} have no address",
     "PROFILE_IF_HAVE_ADDRESS": (
         "@{username}\n"
-        "Name: `{address_name}`\n"
-        "Line 1: `{address_line_1}`\n"
-        "Line 2: `{address_line_2}`\n"
-        "City: `{address_city}`\n"
-        "State: `{address_state}`\n"
-        "ZIP: `{address_zip_code}`\n"
-        "Phone number: `{address_phone}`"
+        "Name: {address_name}\n"
+        "Line 1: {address_line_1}\n"
+        "Line 2: {address_line_2}\n"
+        "City: {address_city}\n"
+        "State: {address_state}\n"
+        "ZIP: {address_zip_code}\n"
+        "Phone number: {address_phone}"
     ),
 
     "GET_INFO_IF_HAVE_NO_ADDRESS": (
