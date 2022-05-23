@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import NamedTuple, Optional, Union
 
-import aiohttp
+import requests as req
 
 from settings.settings import BASE_API
 
@@ -21,31 +21,31 @@ class AddressTuple(NamedTuple):
     using_now: bool
 
 
-async def get_address(address_id: Union[int, str]):
-    async with aiohttp.ClientSession() as session:
-        response = await session.get(f"{BASE_API}addresses/{address_id}/")
-    return await response.json()
+def get_address(address_id: Union[int, str]) -> dict:
+    response = req.get(f"{BASE_API}addresses/{address_id}/")
+    return response.json()
 
 
-async def get_addresses(status: str = "all"):
-    async with aiohttp.ClientSession() as session:
-        if status == 'using':
-            response = await session.get(f"{BASE_API}addresses/?status=using")
-        elif status == 'used':
-            response = await session.get(f"{BASE_API}addresses/?status=used")
-        elif status == 'notused':
-            response = await session.get(f"{BASE_API}addresses/?status=notused")
-        elif status == 'hold':
-            response = await session.get(f"{BASE_API}addresses/?status=hold")
-        else:
-            response = await session.get(f"{BASE_API}address/")
-    return await response.json()
+
+def get_addresses(status: str = "all"):
+    if status == 'using':
+        response = req.get(f"{BASE_API}addresses/?status=using")
+    elif status == 'used':
+        response = req.get(f"{BASE_API}addresses/?status=used")
+    elif status == 'notused':
+        response = req.get(f"{BASE_API}addresses/?status=notused")
+    elif status == 'hold':
+        response = req.get(f"{BASE_API}addresses/?status=hold")
+    else:
+        response = req.get(f"{BASE_API}address/")
+    return response.json()
 
 
-async def change_status(address_id: int, status: str = "used"):
-    async with aiohttp.ClientSession() as session:
-        await session.patch(
-            f'{BASE_API}addresses/{address_id}/', data={"status": status})
+def change_status(address_id: int, status: str = "used"):
+    return req.patch(
+        f'{BASE_API}addresses/{address_id}/',
+        data={"status": status}
+    ).json()
 
 
 def serialize_addresses(data: Union[list[dict], dict]):

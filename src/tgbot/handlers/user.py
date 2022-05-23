@@ -18,7 +18,7 @@ async def user_start(message: types.Message):
         pass
     elif "start" in message.get_command():
         text = "Welcome!\n" + text
-        await telegram_user_api.sign_up_user(message.from_user)
+        telegram_user_api.sign_up_user(message.from_user)
 
     keyboard = menu_keyboard()
     await message.bot.send_message(message.from_user.id, text, reply_markup=keyboard)
@@ -28,11 +28,11 @@ async def user_start(message: types.Message):
 
 
 async def get_profile(message: types.Message):
-    data = await telegram_user_api.get_user(message.from_user)
+    data = telegram_user_api.get_user(message.from_user)
     user = telegram_user_api.serialize_user(data)
     text = f"@{user.username}\n"
     if user.current_address:
-        data = await addresses_api.get_address(user.current_address)
+        data = addresses_api.get_address(user.current_address)
         address = addresses_api.serialize_addresses(data)
         text = (
             f"Name: `{address.name}`\n"
@@ -57,7 +57,7 @@ async def get_profile(message: types.Message):
 
 
 async def get_info(message: types.Message):
-    data = await telegram_user_api.get_user(message.from_user)
+    data = telegram_user_api.get_user(message.from_user)
     user = telegram_user_api.serialize_user(data)
     text = (
         f"{message.from_user.first_name}, please check our price. It's okay?\n\n"
@@ -80,7 +80,7 @@ async def get_info(message: types.Message):
 
 
 async def get_addresses(callback: types.CallbackQuery):
-    data = await addresses_api.get_addresses()
+    data = addresses_api.get_addresses()
     addresses = addresses_api.serialize_addresses(data)
     await telegram_user_api.use_address(callback.from_user, addresses.id)
     await get_profile(callback.message)
@@ -88,7 +88,7 @@ async def get_addresses(callback: types.CallbackQuery):
 
 async def get_address(callback: types.CallbackQuery):
     address_id = callback.data.split('#')[1]
-    data = await addresses_api.get_address(address_id)
+    data = addresses_api.get_address(address_id)
     address_data = addresses_api.serialize_addresses(data)
     text = (
         "⬇️ Shipping address ⬇️\n"
@@ -128,10 +128,10 @@ async def change_status_choice(callback: types.CallbackQuery):
 
 async def change_status_send(callback: types.CallbackQuery):
     status = callback.data.split('#')[1]
-    data = await telegram_user_api.get_user(callback.from_user)
+    data = telegram_user_api.get_user(callback.from_user)
     user = telegram_user_api.serialize_user(data)
 
-    await addresses_api.change_status(address_id=user.current_address, status=status)
+    addresses_api.change_status(address_id=user.current_address, status=status)
     await back_to_menu(callback)
 
 
