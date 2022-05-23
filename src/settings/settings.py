@@ -6,6 +6,54 @@ from pathlib import Path
 BOT_TOKEN = os.environ.get("BOT_TOKEN")
 ADMINS = tuple(map(int, os.environ.get("ADMINS", "").split(',')))
 USE_REDIS = bool(os.environ.get("USE_REDIS"))
+MESSAGE_TEXT = {
+    "START_COMMAND": "Welcome!\nPlease select an action",
+    "MENU_COMMAND": "Please select an action",
+    "GET_CONTACTS_COMMAND": "@dexedrine",
+
+    "PROFILE_IF_HAVE_NO_ADDRESS": "@{username} have no address",
+    "PROFILE_IF_HAVE_ADDRESS": (
+        "@{username}\n"
+        "Name: `{address_name}`\n"
+        "Line 1: `{address_line_1}`\n"
+        "Line 2: `{address_line_2}`\n"
+        "City: `{address_city}`\n"
+        "State: `{address_state}`\n"
+        "ZIP: `{address_zip_code}`\n"
+        "Phone number: `{address_phone}`"
+    ),
+
+    "GET_INFO_IF_HAVE_NO_ADDRESS": (
+        "{first_name}, please check our price. It's okay?\n\n"
+        "Receive the parcel – $80\n"
+        "CDEK ~ $25\n\n"
+        "RU Bank of Russia official exchange rate: 68.84"
+    ),
+    "GET_INFO_IF_HAVE_ADDRESS": (
+        "⚠️ If you want to get a new address then"
+        "first update the status of the current one! ⚠️"
+    ),
+
+    "CHOICES_STATUS_FOR_ADDRESS": "choice required status",
+}
+
+BUTTONS_TEXT = {
+    "GET_INFO": "📃 Get Info",
+    "PROFILE": "👤 Profile",
+    "CONTACTS": "Contacts",
+
+    "CHANGE_STATUS": "change status",
+    "GET_INFO_OK": "👌 OK",
+    "GET_INFO_NO_THANKS": "🙅‍♂️ No, Thanks",
+    "STATUS_USED": '🗑 Used',
+    "STATUS_HOLD": '🥶 Hold',
+}
+
+DEFAULT_COMMANDS = [
+    # (command, description),
+    ("start", "Sign up"),
+    ("menu", "Output menu"),
+]
 
 # DATABASE
 POSTGRES_DB = os.environ.get('POSTGRES_DB')

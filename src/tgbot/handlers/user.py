@@ -1,4 +1,5 @@
 from aiogram import Dispatcher, types
+from settings.settings import MESSAGE_TEXT
 
 from tgbot.keyboards.inline import (
     address_page, get_info_keyboard,
@@ -12,12 +13,12 @@ async def back_to_menu(callback: types.CallbackQuery):
 
 
 async def user_start(message: types.Message):
-    text = "Please select an action"
+    text = MESSAGE_TEXT["START_COMMAND"]
 
     if not message.get_command():
         pass
     elif "start" in message.get_command():
-        text = "Welcome!\n" + text
+        text = MESSAGE_TEXT["MENU_COMMAND"]
         telegram_user_api.sign_up_user(message.from_user)
 
     keyboard = menu_keyboard()
@@ -43,9 +44,15 @@ async def get_profile(message: types.Message):
             f"ZIP: `{address.zip_code}`\n"
             f"Phone number: `{address.phone}`"
         )
+        MESSAGE_TEXT["PROFILE_IF_HAVE_ADDRESS"].format(
+            username=user.username, address_name=address.name,
+            address_line_1=address.line_1, address_line_2=address.line_2,
+            address_city=address.city, address_state=address.state,
+            address_zip_code=address.zip_code, address_phone=address.phone
+        )
         parse_mode = "Markdown"
     else:
-        text += "No current address"
+        text = MESSAGE_TEXT["PROFILE_IF_HAVE_NO_ADDRESS"].format(user.username)
         parse_mode = None
 
     await message.bot.send_message(
@@ -59,17 +66,10 @@ async def get_profile(message: types.Message):
 async def get_info(message: types.Message):
     data = telegram_user_api.get_user(message.from_user)
     user = telegram_user_api.serialize_user(data)
-    text = (
-        f"{message.from_user.first_name}, please check our price. It's okay?\n\n"
-        "Receive the parcel – $80\n"
-        "CDEK ~ $25\n\n"
-        "RU Bank of Russia official exchange rate: 68.84"
-    )
+    text = MESSAGE_TEXT["GET_INFO_IF_HAVE_NO_ADDRESS"].format(
+        first_name=message.from_user.first_name)
     if user.current_address:
-        text = (
-            "⚠️ If you want to get a new address then"
-            "first update the status of the current one! ⚠️"
-        )
+        text = MESSAGE_TEXT["GET_INFO_IF_HAVE_ADDRESS"]
     await message.bot.send_message(
         message.from_user.id, text,
         reply_markup=get_info_keyboard(bool(user.current_address)),
@@ -121,7 +121,7 @@ async def use_address(callback: types.CallbackQuery):
 
 async def change_status_choice(callback: types.CallbackQuery):
     keyboard = get_status_keyboard()
-    text = "choice required status"
+    text = MESSAGE_TEXT["CHOICES_STATUS_FOR_ADDRESS"]
     await callback.bot.send_message(callback.from_user.id, text, reply_markup=keyboard)
     await callback.bot.delete_message(callback.from_user.id, callback.message.message_id)
 
@@ -136,8 +136,9 @@ async def change_status_send(callback: types.CallbackQuery):
 
 
 async def get_contacts(message: types.Message):
+    text = MESSAGE_TEXT["GET_CONTACTS_COMMAND"]
     await message.bot.send_message(
-        message.from_user.id, "@dexedrine")
+        message.from_user.id, text)
     await message.bot.delete_message(
         message.from_user.id, message.message_id
     )
