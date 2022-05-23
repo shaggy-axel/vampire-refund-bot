@@ -35,13 +35,13 @@ async def get_profile(message: types.Message):
         data = addresses_api.get_address(user.current_address)
         address = addresses_api.serialize_addresses(data)
         text = MESSAGE_TEXT["PROFILE_IF_HAVE_ADDRESS"].format(
-            username=user.username, address_name=address.name,
+            address_name=address.name,
             address_line_1=address.line_1, address_line_2=address.line_2,
             address_city=address.city, address_state=address.state,
             address_zip_code=address.zip_code, address_phone=address.phone
         )
     else:
-        text = MESSAGE_TEXT["PROFILE_IF_HAVE_NO_ADDRESS"].format(username=user.username)
+        text = MESSAGE_TEXT["PROFILE_IF_HAVE_NO_ADDRESS"]
 
     await message.bot.send_message(
         message.from_user.id, text,
