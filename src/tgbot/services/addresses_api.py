@@ -26,7 +26,6 @@ def get_address(address_id: Union[int, str]) -> dict:
     return response.json()
 
 
-
 def get_addresses(status: str = "all"):
     if status == 'using':
         response = req.get(f"{BASE_API}addresses/?status=using")
