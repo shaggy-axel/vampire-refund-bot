@@ -1,5 +1,5 @@
 from aiogram import Dispatcher, types
-from settings.settings import MESSAGE_TEXT
+from settings.settings import BUTTONS_TEXT, MESSAGE_TEXT
 
 from tgbot.keyboards.inline import (
     address_page, get_info_keyboard,
@@ -143,9 +143,9 @@ def register_user(dp: Dispatcher):
     dp.register_callback_query_handler(
         back_to_menu, lambda callback: callback.data == 'menu')
     dp.register_message_handler(
-        get_profile, lambda message: 'Profile' in message.text, state="*")
+        get_profile, lambda message: BUTTONS_TEXT['PROFILE'] in message.text, state="*")
     dp.register_message_handler(
-        get_info, lambda message: 'Get Info' in message.text, state="*")
+        get_info, lambda message: BUTTONS_TEXT['GET_INFO'] in message.text, state="*")
     dp.register_callback_query_handler(
         get_addresses, lambda callback: callback.data.split('#')[0] == 'get_address')
     dp.register_callback_query_handler(
@@ -157,4 +157,4 @@ def register_user(dp: Dispatcher):
     dp.register_callback_query_handler(
         change_status_send, lambda callback: 'status' == callback.data.split('#')[0])
     dp.register_message_handler(
-        get_contacts, lambda message: 'Contacts' in message.text)
+        get_contacts, lambda message: BUTTONS_TEXT['CONTACTS'] in message.text)
