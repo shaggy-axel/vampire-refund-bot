@@ -9,9 +9,12 @@ USE_REDIS = bool(os.environ.get("USE_REDIS"))
 MESSAGE_TEXT = {
     "START_COMMAND": "Автоматическая выдача чистых адресов в США и странах Европы.",
     "MENU_COMMAND": "Пожалуйста, выберите действие.",
-    "GET_CONTACTS_COMMAND": "*Админ:* @RefBanker\n*Скупщик:* @RefBank\_Buyer\n*Поддержка бота:* @dexedrine",
+    "GET_CONTACTS_COMMAND": (
+        "*Админ:* @RefBanker\n*Скупщик:* @RefBank\_Buyer\n*Поддержка бота:* @dexedrine"),
 
-    "PROFILE_IF_HAVE_NO_ADDRESS": "У вас нет используемых адресов!\nПожалуйста, нажмите *Получить адрес* для начала работы.",
+    "PROFILE_IF_HAVE_NO_ADDRESS": (
+        "У вас нет используемых адресов!\n"
+        "Пожалуйста, нажмите *Получить адрес* для начала работы."),
     "PROFILE_IF_HAVE_ADDRESS": (
         "*Name:* {address_name}\n"
         "*Line 1:* {address_line_1}\n"
