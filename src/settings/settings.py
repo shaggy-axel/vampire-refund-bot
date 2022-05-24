@@ -9,17 +9,17 @@ USE_REDIS = bool(os.environ.get("USE_REDIS"))
 MESSAGE_TEXT = {
     "START_COMMAND": "👋 Welcome!\nPlease select an action.",
     "MENU_COMMAND": "Please select an action",
-    "GET_CONTACTS_COMMAND": "Admin: @RefBanker\nBuyer: @RefBank_Buyer\nBot: @dexedrine",
+    "GET_CONTACTS_COMMAND": "*Admin:* @RefBanker\n*Buyer:* @RefBank_Buyer\n*Bot Support:* @dexedrine",
 
-    "PROFILE_IF_HAVE_NO_ADDRESS": "you have no address",
+    "PROFILE_IF_HAVE_NO_ADDRESS": "You don't have any adresses!\nPlease click 'Get Info' to get one more.",
     "PROFILE_IF_HAVE_ADDRESS": (
-        "**Name:** {address_name}\n"
-        "**Line 1:** {address_line_1}\n"
-        "**Line 2:** {address_line_2}\n"
-        "**City:** {address_city}\n"
-        "**State:** {address_state}\n"
-        "**ZIP:** {address_zip_code}\n"
-        "**Phone number:** {address_phone}"
+        "*Name:* {address_name}\n"
+        "*Line 1:* {address_line_1}\n"
+        "*Line 2:* {address_line_2}\n"
+        "*City:* {address_city}\n"
+        "*State:* {address_state}\n"
+        "*ZIP:* {address_zip_code}\n"
+        "*Phone number:* {address_phone}"
     ),
 
     "GET_INFO_IF_HAVE_NO_ADDRESS": (
