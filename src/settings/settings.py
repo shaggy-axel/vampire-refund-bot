@@ -7,11 +7,11 @@ BOT_TOKEN = os.environ.get("BOT_TOKEN")
 ADMINS = tuple(map(int, os.environ.get("ADMINS", "").split(',')))
 USE_REDIS = bool(os.environ.get("USE_REDIS"))
 MESSAGE_TEXT = {
-    "START_COMMAND": "👋 Welcome!\nPlease select an action.",
-    "MENU_COMMAND": "Please select an action",
-    "GET_CONTACTS_COMMAND": "*Admin:* @RefBanker\n*Buyer:* @RefBank_Buyer\n*Bot Support:* @dexedrine",
+    "START_COMMAND": "Автоматическая выдача чистых адресов в США и странах Европы.",
+    "MENU_COMMAND": "Пожалуйста, выберите действие.",
+    "GET_CONTACTS_COMMAND": "*Админ:* @RefBanker\n*Скупщик:* @RefBank_Buyer\n*Поддержка бота:* @dexedrine",
 
-    "PROFILE_IF_HAVE_NO_ADDRESS": "You don't have any adresses!\nPlease click 'Get Info' to get one more.",
+    "PROFILE_IF_HAVE_NO_ADDRESS": "У вас нет используемых адресов!\nПожалуйста, нажмите *Получить адрес* для начала работы.",
     "PROFILE_IF_HAVE_ADDRESS": (
         "*Name:* {address_name}\n"
         "*Line 1:* {address_line_1}\n"
@@ -19,29 +19,30 @@ MESSAGE_TEXT = {
         "*City:* {address_city}\n"
         "*State:* {address_state}\n"
         "*ZIP:* {address_zip_code}\n"
-        "*Phone number:* {address_phone}"
+        "*Phone number:* {address_phone}\n\n"
+        "*Пожалуйста, изменяйте статус адреса только после заказа!*"
     ),
 
     "GET_INFO_IF_HAVE_NO_ADDRESS": (
-        "{first_name}, please check our [price list](https://docs.google.com/spreadsheets/d/1_vRXD4fowadQ3GF4aPJHjd8NEjEEMwvNeGSIxD0wbqI/edit).\n\nIt's okay?"
+        "{first_name}, в какую страну будет отправлен товар?"
     ),
     "GET_INFO_IF_HAVE_ADDRESS": (
-        "⚠️ If you want to get a new address then first update the status of the current one! ⚠️"
+        "Для получения нового адреса необходимо сначала изменить статус использования текущего!"
     ),
 
-    "CHOICES_STATUS_FOR_ADDRESS": "Select status",
+    "CHOICES_STATUS_FOR_ADDRESS": "Адрес использован",
 }
 
 BUTTONS_TEXT = {
-    "GET_INFO": "📃 Get Info",
-    "PROFILE": "👤 Profile",
-    "CONTACTS": "💬 Contacts",
+    "GET_INFO": "🏚️ Получить адрес",
+    "PROFILE": "👤 Профиль",
+    "CONTACTS": "📘 FAQ",
 
-    "CHANGE_STATUS": "Select status",
-    "GET_INFO_OK": "👌 OK",
-    "GET_INFO_NO_THANKS": "🙅‍♂️ No, Thanks",
-    "STATUS_USED": '🗑 Used',
-    "STATUS_HOLD": '🥶 Hold',
+    "CHANGE_STATUS": "Адрес использован",
+    "GET_INFO_OK": "🇺🇸 США",
+    "GET_INFO_NO_THANKS": "🇨🇿 Чехия",
+    "STATUS_USED": '✅ Основной товар отправлен',
+    "STATUS_HOLD": '😡 Нужен новый адрес',
 }
 
 DEFAULT_COMMANDS = [
