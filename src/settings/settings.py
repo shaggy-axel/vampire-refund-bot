@@ -7,41 +7,37 @@ BOT_TOKEN = os.environ.get("BOT_TOKEN")
 ADMINS = tuple(map(int, os.environ.get("ADMINS", "").split(',')))
 USE_REDIS = bool(os.environ.get("USE_REDIS"))
 MESSAGE_TEXT = {
-    "START_COMMAND": "Welcome!\nPlease select an action",
+    "START_COMMAND": "👋 Welcome!\nPlease select an action.",
     "MENU_COMMAND": "Please select an action",
-    "GET_CONTACTS_COMMAND": "@dexedrine",
+    "GET_CONTACTS_COMMAND": "Admin: @RefBanker\nBuyer: @RefBank_Buyer\nBot: @dexedrine",
 
     "PROFILE_IF_HAVE_NO_ADDRESS": "you have no address",
     "PROFILE_IF_HAVE_ADDRESS": (
-        "Name: {address_name}\n"
-        "Line 1: {address_line_1}\n"
-        "Line 2: {address_line_2}\n"
-        "City: {address_city}\n"
-        "State: {address_state}\n"
-        "ZIP: {address_zip_code}\n"
-        "Phone number: {address_phone}"
+        "**Name:** {address_name}\n"
+        "**Line 1:** {address_line_1}\n"
+        "**Line 2:** {address_line_2}\n"
+        "**City:** {address_city}\n"
+        "**State:** {address_state}\n"
+        "**ZIP:** {address_zip_code}\n"
+        "**Phone number:** {address_phone}"
     ),
 
     "GET_INFO_IF_HAVE_NO_ADDRESS": (
-        "{first_name}, please check our price. It's okay?\n\n"
-        "Receive the parcel – $80\n"
-        "CDEK ~ $25\n\n"
-        "RU Bank of Russia official exchange rate: 68.84"
+        "{first_name}, please check our [price list](https://docs.google.com/spreadsheets/d/1_vRXD4fowadQ3GF4aPJHjd8NEjEEMwvNeGSIxD0wbqI/edit).\n\nIt's okay?"
     ),
     "GET_INFO_IF_HAVE_ADDRESS": (
-        "⚠️ If you want to get a new address then"
-        "first update the status of the current one! ⚠️"
+        "⚠️ If you want to get a new address then first update the status of the current one! ⚠️"
     ),
 
-    "CHOICES_STATUS_FOR_ADDRESS": "choice required status",
+    "CHOICES_STATUS_FOR_ADDRESS": "Select status",
 }
 
 BUTTONS_TEXT = {
     "GET_INFO": "📃 Get Info",
     "PROFILE": "👤 Profile",
-    "CONTACTS": "Contacts",
+    "CONTACTS": "💬 Contacts",
 
-    "CHANGE_STATUS": "change status",
+    "CHANGE_STATUS": "Select status",
     "GET_INFO_OK": "👌 OK",
     "GET_INFO_NO_THANKS": "🙅‍♂️ No, Thanks",
     "STATUS_USED": '🗑 Used',
