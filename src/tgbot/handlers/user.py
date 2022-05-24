@@ -22,7 +22,10 @@ async def user_start(message: types.Message):
         telegram_user_api.sign_up_user(message.from_user)
 
     keyboard = menu_keyboard()
-    await message.bot.send_message(message.from_user.id, text, reply_markup=keyboard)
+    await message.bot.send_message(
+        message.from_user.id, text, reply_markup=keyboard,
+        parse_mode="Markdown"
+    )
     await message.bot.delete_message(
         message.chat.id, message.message_id
     )
@@ -44,7 +47,7 @@ async def get_profile(message: types.Message):
         text = MESSAGE_TEXT["PROFILE_IF_HAVE_NO_ADDRESS"]
 
     await message.bot.send_message(
-        message.from_user.id, text,
+        message.from_user.id, text, parse_mode="Markdown",
         reply_markup=profile_keyboard(bool(user.current_address)))
     await message.bot.delete_message(
         message.from_user.id, message.message_id,
@@ -111,7 +114,8 @@ async def use_address(callback: types.CallbackQuery):
 async def change_status_choice(callback: types.CallbackQuery):
     keyboard = get_status_keyboard()
     text = MESSAGE_TEXT["CHOICES_STATUS_FOR_ADDRESS"]
-    await callback.bot.send_message(callback.from_user.id, text, reply_markup=keyboard)
+    await callback.bot.send_message(
+        callback.from_user.id, text, reply_markup=keyboard, parse_mode="Markdown")
     await callback.bot.delete_message(callback.from_user.id, callback.message.message_id)
 
 
@@ -127,7 +131,8 @@ async def change_status_send(callback: types.CallbackQuery):
 async def get_contacts(message: types.Message):
     text = MESSAGE_TEXT["GET_CONTACTS_COMMAND"]
     await message.bot.send_message(
-        message.from_user.id, text)
+        message.from_user.id, text, parse_mode="Markdown",
+    )
     await message.bot.delete_message(
         message.from_user.id, message.message_id
     )
