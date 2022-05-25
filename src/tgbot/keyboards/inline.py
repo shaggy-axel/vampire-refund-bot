@@ -52,9 +52,9 @@ def get_info_keyboard(have_an_address: bool) -> InlineKeyboardMarkup:
     keyboard = InlineKeyboardMarkup()
     if not have_an_address:
         keyboard.add(
-            InlineKeyboardButton(BUTTONS_TEXT["GET_INFO_OK"], callback_data="get_address"),
-            InlineKeyboardButton(BUTTONS_TEXT["GET_INFO_NO_THANKS"], callback_data="menu"),
-        )
+    InlineKeyboardButton(BUTTONS_TEXT["GET_INFO_OK"], callback_data="get_address"))
+        keyboard.add(
+    InlineKeyboardButton(BUTTONS_TEXT["GET_INFO_NO_THANKS"], callback_data="menu"))
     return keyboard
 
 
