@@ -15,7 +15,7 @@ docker-compose exec web sh -c "python3 src/manage.py migrate"
 ## Database migrations
 ```bash
 # to make new migration files
-docker-compose exec web sh -c "python3 src/manage.py makemigrations"
+docker-compose exec web sh -c "venv/bin/python src/manage.py makemigrations"
 # run migrations
-docker-compose exec web sh -c "python3 src/manage.py migrate"
+docker-compose exec web sh -c "venv/bin/python src/manage.py migrate"
 ```
