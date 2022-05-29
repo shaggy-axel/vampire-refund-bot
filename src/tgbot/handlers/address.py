@@ -23,7 +23,7 @@ async def get_info(message: types.Message):
 
 
 async def get_address(callback: types.CallbackQuery):
-    data = addresses_api.get_addresses()
+    data = addresses_api.get_new_address()
     addresses = addresses_api.serialize_addresses(data)
     telegram_user_api.use_address(callback.from_user, addresses.id)
 

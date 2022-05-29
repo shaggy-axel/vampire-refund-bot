@@ -10,7 +10,7 @@ async def get_profile(message: types.Message):
     user = telegram_user_api.serialize_user(data)
 
     if user.current_address:
-        data = addresses_api.get_address(user.current_address)
+        data = addresses_api.get_address_info(user.current_address)
         address = addresses_api.serialize_addresses(data)
         text = MESSAGE_TEXT["PROFILE_IF_HAVE_ADDRESS"].format(
             address_name=address.name,
