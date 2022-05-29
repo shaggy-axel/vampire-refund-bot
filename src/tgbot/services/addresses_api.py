@@ -21,22 +21,13 @@ class AddressTuple(NamedTuple):
     using_now: bool
 
 
-def get_address(address_id: Union[int, str]) -> dict:
+def get_address_info(address_id: Union[int, str]) -> dict:
     response = req.get(f"{BASE_API}addresses/{address_id}/")
     return response.json()
 
 
-def get_addresses(status: str = "all"):
-    if status == 'using':
-        response = req.get(f"{BASE_API}addresses/?status=using")
-    elif status == 'used':
-        response = req.get(f"{BASE_API}addresses/?status=used")
-    elif status == 'notused':
-        response = req.get(f"{BASE_API}addresses/?status=notused")
-    elif status == 'hold':
-        response = req.get(f"{BASE_API}addresses/?status=hold")
-    else:
-        response = req.get(f"{BASE_API}address/")
+def get_new_address():
+    response = req.get(f"{BASE_API}address/")
     return response.json()
 
 

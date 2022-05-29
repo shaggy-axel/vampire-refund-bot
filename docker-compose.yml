@@ -3,9 +3,7 @@ version: '3.3'
 services:
   bot:
     container_name: ${PROJECT_NAME}-bot
-    build:
-      dockerfile: Dockerfile.bot
-      context: .
+    build: .
     working_dir: "/usr/src/app/${BOT_NAME:-tg_bot}"
     volumes:
       - .:/usr/src/app/${BOT_NAME:-tg_bot}
@@ -15,7 +13,6 @@ services:
     restart: always
     depends_on:
       - db
-      - redis
       - web
     env_file: .env
 
@@ -30,7 +27,6 @@ services:
     restart: always
     depends_on:
       - db
-      - redis
     env_file: .env
     command: /bin/bash -c 'scripts/run-server.sh'
 
@@ -44,20 +40,5 @@ services:
     ports:
       - 5440:5432
 
-  redis:
-    image: redis:6.2-alpine
-    container_name: ${PROJECT_NAME}-redis
-    restart: always
-    ports:
-      - 6340:6379
-    command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASSWORD}
-    volumes:
-      - redis_data:/data
-
-networks:
-  tg_bot:
-    driver: bridge
-
 volumes:
   postgres_data:
-  redis_data:
