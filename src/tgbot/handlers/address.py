@@ -33,6 +33,6 @@ async def get_address(callback: types.CallbackQuery):
 
 def register_address(dp: Dispatcher):
     dp.register_message_handler(
-        get_info, lambda message: BUTTONS_TEXT['GET_INFO'] in message.text, state="*")
+        get_info, lambda message: BUTTONS_TEXT['GET_INFO'] in message.text)
     dp.register_callback_query_handler(
         get_address, lambda callback: callback.data.split('#')[0] == 'get_address')

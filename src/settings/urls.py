@@ -15,4 +15,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include(router.urls)),
     path('api/v1/address/', GetAddressAPI.as_view()),
+    path('api/v1/products/', include('apps.products.api.urls')),
 ]
