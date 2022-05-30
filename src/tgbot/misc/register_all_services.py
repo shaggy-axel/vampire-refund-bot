@@ -1,6 +1,6 @@
 from aiogram import Dispatcher
 from tgbot.filters.admin import AdminFilter
-from tgbot.handlers import register_user, register_menu, register_address, register_general
+from tgbot.handlers import *
 from tgbot.middlewares.db import DbMiddleware
 from tgbot.misc.set_bot_commands import set_default_commands
 
@@ -14,6 +14,7 @@ def register_all_filters(dp: Dispatcher):
 
 
 def register_all_handlers(dp: Dispatcher):
+    register_states(dp)
     register_user(dp)
     register_menu(dp)
     register_address(dp)

@@ -32,7 +32,7 @@ def use_address(user: User, current_address: int):
     req.patch(f'{BASE_API}users/{user.id}/', data={"current_address": current_address})
 
 
-def serialize_user(data: dict):
+def serialize_user(data: dict) -> UserTuple:
     try:
         return UserTuple(
             telegram_id=data['telegram_id'],

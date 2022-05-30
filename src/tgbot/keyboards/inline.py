@@ -31,3 +31,13 @@ def get_status_keyboard():
     keyboard.add(
         InlineKeyboardButton(BUTTONS_TEXT['STATUS_HOLD'], callback_data="status#hold"))
     return keyboard
+
+
+def time_choice_keyboard():
+    keyboard = InlineKeyboardMarkup()
+    for hour in range(0, 24, 2):
+        keyboard.add(
+            InlineKeyboardButton(f"{hour:02}:00", callback_data=f"{hour:02}:00"),
+            InlineKeyboardButton(f"{hour + 1:02}:00", callback_data=f"{hour + 1:02}:00"),
+        )
+    return keyboard

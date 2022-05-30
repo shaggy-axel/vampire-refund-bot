@@ -27,6 +27,6 @@ async def menu(message: types.Message):
 
 
 def register_menu(dp: Dispatcher):
-    dp.register_message_handler(menu, commands=["start", "menu"], state="*")
+    dp.register_message_handler(menu, commands=["start", "menu"])
     dp.register_callback_query_handler(
         back_to_menu, lambda callback: callback.data == 'menu')

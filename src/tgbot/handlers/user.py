@@ -1,8 +1,10 @@
+import logging
 from aiogram import Dispatcher, types
 
+from tgbot.misc.states import ProductForm
 from tgbot.keyboards.inline import get_status_keyboard, profile_keyboard
 from tgbot.services import addresses_api, telegram_user_api
-from settings.text import BUTTONS_TEXT, MESSAGE_TEXT
+from settings.text import BUTTONS_TEXT, MESSAGE_TEXT, PRODUCT_FORM_TEXT
 
 
 async def get_profile(message: types.Message):
@@ -37,20 +39,27 @@ async def change_status_choice(callback: types.CallbackQuery):
     await callback.bot.delete_message(callback.from_user.id, callback.message.message_id)
 
 
-async def change_status_send(callback: types.CallbackQuery):
-    status = callback.data.split('#')[1]
-    data = telegram_user_api.get_user(callback.from_user)
+def change_status_and_bind_product(user: types.User, status: str):
+    data = telegram_user_api.get_user(user)
     user = telegram_user_api.serialize_user(data)
-
     addresses_api.change_status(address_id=user.current_address, status=status)
-    callback.message.from_user = callback.from_user
-    await get_profile(callback.message)
+
+
+async def change_status_send(callback: types.CallbackQuery, state):
+    status = callback.data.split('#')[1]
+    await ProductForm.product_name.set()
+    current_state = await state.get_state()
+    await callback.bot.send_message(callback.from_user.id, PRODUCT_FORM_TEXT['ASK_FOR_PRODUCT_NAME'] + f"\n{current_state}")
+    # change_status_and_bind_product(callback.from_user, status)
+    # callback.message.from_user = callback.from_user
+    # await get_profile(callback.message)
 
 
 def register_user(dp: Dispatcher):
+    logging.info("ЗАРЕГИСТРИРОВАЛ ПОЛЬЗОВАТЕЛЕЙ")
     dp.register_message_handler(
-        get_profile, lambda message: BUTTONS_TEXT['PROFILE'] in message.text, state="*")
+        get_profile, lambda message: BUTTONS_TEXT['PROFILE'] in message.text)
     dp.register_callback_query_handler(
         change_status_choice, lambda callback: 'change_status' == callback.data)
     dp.register_callback_query_handler(
-        change_status_send, lambda callback: 'status' == callback.data.split('#')[0])
+        change_status_send, lambda callback: 'status' == callback.data.split('#')[0], state="*")
