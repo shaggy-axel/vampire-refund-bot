@@ -1,5 +1,5 @@
 import logging
-from aiogram import Dispatcher, types
+from aiogram import dispatcher, types
 
 from tgbot.misc.states import ProductForm
 from tgbot.keyboards.inline import get_status_keyboard, profile_keyboard
@@ -26,9 +26,7 @@ async def get_profile(message: types.Message):
     await message.bot.send_message(
         message.from_user.id, text, parse_mode="Markdown",
         reply_markup=profile_keyboard(bool(user.current_address)))
-    await message.bot.delete_message(
-        message.from_user.id, message.message_id,
-    )
+    await message.delete()
 
 
 async def change_status_choice(callback: types.CallbackQuery):
@@ -39,23 +37,18 @@ async def change_status_choice(callback: types.CallbackQuery):
     await callback.bot.delete_message(callback.from_user.id, callback.message.message_id)
 
 
-def change_status_and_bind_product(user: types.User, status: str):
-    data = telegram_user_api.get_user(user)
-    user = telegram_user_api.serialize_user(data)
-    addresses_api.change_status(address_id=user.current_address, status=status)
-
-
-async def change_status_send(callback: types.CallbackQuery, state):
+async def change_status_send(callback: types.CallbackQuery, state: dispatcher.FSMContext):
     status = callback.data.split('#')[1]
+    async with state.proxy() as data:
+        data['status'] = status
+        data['user'] = callback.from_user
+
     await ProductForm.product_name.set()
-    current_state = await state.get_state()
-    await callback.bot.send_message(callback.from_user.id, PRODUCT_FORM_TEXT['ASK_FOR_PRODUCT_NAME'] + f"\n{current_state}")
-    # change_status_and_bind_product(callback.from_user, status)
-    # callback.message.from_user = callback.from_user
-    # await get_profile(callback.message)
+    await callback.bot.send_message(callback.from_user.id, PRODUCT_FORM_TEXT['ASK_FOR_PRODUCT_NAME'])
+    await callback.bot.delete_message(callback.from_user.id, callback.message.message_id)
 
 
-def register_user(dp: Dispatcher):
+def register_user(dp: dispatcher.Dispatcher):
     logging.info("ЗАРЕГИСТРИРОВАЛ ПОЛЬЗОВАТЕЛЕЙ")
     dp.register_message_handler(
         get_profile, lambda message: BUTTONS_TEXT['PROFILE'] in message.text)

@@ -1,12 +1,14 @@
 from datetime import datetime
-import logging
 from typing import Union
+
 from aiogram import types, dispatcher
 from settings.text import PRODUCT_FORM_TEXT
+from tgbot.handlers.user import get_profile
 from tgbot.keyboards.inline import time_choice_keyboard
 
 from tgbot.misc.states import ProductForm
 from tgbot.keyboards.calendar_keyboard import SimpleCalendar
+from tgbot.services import addresses_api, products_api, telegram_user_api
 
 
 async def cancel_handler(
@@ -14,7 +16,6 @@ async def cancel_handler(
     state: dispatcher.FSMContext
 ) -> None:
     """ Allow user to cancel any action """
-    logging.info('ПЫТАЕТСЯ ОТМЕНИТЬ!!')
     current_state = await state.get_state()
     if current_state is None:
         await _.bot.send_message(_.from_user.id, "Нечего отменять")
@@ -27,13 +28,13 @@ async def cancel_handler(
 async def save_product_name_go_to_shop_name(
     message: types.Message, state: dispatcher.FSMContext
 ):
-    await message.bot.send_message(message.from_user.id, 'получил')
     async with state.proxy() as data:
         data['product_name'] = message.text
     
     await ProductForm.next()
     await message.answer(
         PRODUCT_FORM_TEXT["ASK_FOR_SHOP_NAME"], parse_mode="Markdown")
+    await message.delete()
 
 
 async def save_shop_name_go_to_price(
@@ -45,6 +46,7 @@ async def save_shop_name_go_to_price(
     await ProductForm.next()
     await message.answer(
         PRODUCT_FORM_TEXT["ASK_FOR_PRICE"], parse_mode="Markdown")
+    await message.delete()
 
 
 async def save_price_go_to_delivery_date(
@@ -58,6 +60,7 @@ async def save_price_go_to_delivery_date(
     await message.answer(
         PRODUCT_FORM_TEXT["ASK_FOR_DATE"], reply_markup=keyboard,
         parse_mode="Markdown")
+    await message.delete()
 
 
 async def save_delivery_date_go_to_delivery_time(
@@ -91,21 +94,24 @@ async def save_delivery_time_and_finish(
             int(data['delivery_time'].split(':')[1]), 0
         )
 
-        reply = (
-            f"*{data['product_name']}* from _{data['shop_name']}_\n"
-            f"price: `{data['price']}`\n"
-            f"delivery date: `{delivery_date}`\n"
-            # f"address status: {}"
+        user = telegram_user_api.serialize_user(telegram_user_api.get_user(data['user']))
+        addresses_api.change_status(
+            address_id=user.current_address, status=data['status'],
         )
+        products_api.bind_product(data={
+            "name": data["product_name"],
+            "shop_name": data["shop_name"],
+            "price": data["price"],
+            "delivery_date": f"{delivery_date:%Y-%m-%d %H:%M}",
+            "address": user.current_address,
+        })
 
     await state.finish()
-    await callback.bot.send_message(
-        callback.from_user.id, reply, parse_mode="Markdown"
-    )
+    callback.message.from_user = callback.from_user
+    await get_profile(callback.message)
 
 
 def register_states(dp: dispatcher.Dispatcher):
-    logging.info("ЗАРЕГИСТРИРОВАЛ СТЕЙТЫ")
     dp.message_handler(cancel_handler, commands='cancel', state='*')
     dp.message_handler(
         cancel_handler, lambda message: message.text.lower() == "cancel", state='*')
