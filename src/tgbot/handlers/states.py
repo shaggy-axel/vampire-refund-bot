@@ -30,7 +30,7 @@ async def save_product_name_go_to_shop_name(
 ):
     async with state.proxy() as data:
         data['product_name'] = message.text
-    
+
     await ProductForm.next()
     await message.answer(
         PRODUCT_FORM_TEXT["ASK_FOR_SHOP_NAME"], parse_mode="Markdown")

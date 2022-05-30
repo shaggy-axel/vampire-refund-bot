@@ -44,7 +44,8 @@ async def change_status_send(callback: types.CallbackQuery, state: dispatcher.FS
         data['user'] = callback.from_user
 
     await ProductForm.product_name.set()
-    await callback.bot.send_message(callback.from_user.id, PRODUCT_FORM_TEXT['ASK_FOR_PRODUCT_NAME'])
+    await callback.bot.send_message(
+        callback.from_user.id, PRODUCT_FORM_TEXT['ASK_FOR_PRODUCT_NAME'])
     await callback.bot.delete_message(callback.from_user.id, callback.message.message_id)
 
 
