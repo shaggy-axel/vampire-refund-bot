@@ -38,9 +38,9 @@ BUTTONS_TEXT = {
 }
 
 PRODUCT_FORM_TEXT = {
-    "ASK_FOR_PRODUCT_NAME": "Отправьте название продукта",
-    "ASK_FOR_SHOP_NAME": "Отправьте название магазина",
-    "ASK_FOR_PRICE": "Отправьте цены",
-    "ASK_FOR_DATE": "Выберите дату",
-    "ASK_FOR_TIME": "Выберите время",
+    "ASK_FOR_PRODUCT_NAME": "Укажите наименование товара (например, MSI GeForce RTX 3080)",
+    "ASK_FOR_SHOP_NAME": "Укажите название магазина (например, Amazon)",
+    "ASK_FOR_PRICE": "Укажите стоимость товара (например, 850$)",
+    "ASK_FOR_DATE": "Выберите дату доставки",
+    "ASK_FOR_TIME": "Выберите время доставки",
 }
