@@ -2,7 +2,7 @@ import logging
 from aiogram import dispatcher, types
 
 from tgbot.misc.states import ProductForm
-from tgbot.keyboards.inline import get_status_keyboard, profile_keyboard
+from tgbot.keyboards.inline import cancel_keyboard, get_status_keyboard, profile_keyboard
 from tgbot.services import addresses_api, telegram_user_api
 from settings.text import BUTTONS_TEXT, MESSAGE_TEXT, PRODUCT_FORM_TEXT
 
@@ -45,7 +45,8 @@ async def change_status_send(callback: types.CallbackQuery, state: dispatcher.FS
 
     await ProductForm.product_name.set()
     await callback.bot.send_message(
-        callback.from_user.id, PRODUCT_FORM_TEXT['ASK_FOR_PRODUCT_NAME'])
+        callback.from_user.id, PRODUCT_FORM_TEXT['ASK_FOR_PRODUCT_NAME'],
+        reply_markup=cancel_keyboard("Отмена"), parse_mode="Markdown")
     await callback.bot.delete_message(callback.from_user.id, callback.message.message_id)
 
 
