@@ -4,7 +4,9 @@ from typing import Union
 from aiogram import types, dispatcher
 from settings.text import MESSAGE_TEXT, PRODUCT_FORM_TEXT
 from tgbot.handlers.user import get_profile
-from tgbot.keyboards.inline import cancel_button, cancel_keyboard, pass_button, time_choice_keyboard
+from tgbot.keyboards.inline import (
+    cancel_button, cancel_keyboard, pass_button, time_choice_keyboard
+)
 
 from tgbot.misc.states import ProductForm
 from tgbot.keyboards.calendar_keyboard import SimpleCalendar
