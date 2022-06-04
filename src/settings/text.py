@@ -23,6 +23,7 @@ MESSAGE_TEXT = {
     ),
 
     "CHOICES_STATUS_FOR_ADDRESS": "Адрес использован",
+    "FINISH_WORDS_FOR_ORDER": "Спасибо за заказ",
 }
 
 BUTTONS_TEXT = {
