@@ -8,6 +8,7 @@ class Product(models.Model):
     delivery_date = models.DateTimeField(null=True, blank=True)
     address = models.OneToOneField(
         'addresses.Address', on_delete=models.SET_NULL, null=True, blank=True)
+    product_url = models.URLField(null=True, blank=True)
 
     class Meta:
         db_table = 'products'
