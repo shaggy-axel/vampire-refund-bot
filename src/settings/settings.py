@@ -4,7 +4,7 @@ from pathlib import Path
 
 # TELEGRAM BOT
 BOT_TOKEN = os.environ.get("BOT_TOKEN")
-ADMINS = tuple(map(int, os.environ.get("ADMINS", "").split(',')))
+ADMINS = tuple(map(int, os.environ.get("ADMINS", "123456").split(',')))
 
 DEFAULT_COMMANDS = [
     # (command, description),

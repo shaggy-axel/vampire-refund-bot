@@ -1,4 +1,7 @@
 from datetime import datetime
+import pytz
+
+from django.conf import settings
 from django.db import models
 
 
@@ -24,7 +27,7 @@ def update_address(sender, instance, created: bool, **kwargs):
         address = instance.current_address
         address.status = 'using'
         address.used_by = instance
-        address.used_at = datetime.now()
+        address.used_at = datetime.now(pytz.timezone(settings.TIME_ZONE))
         address.save()
 
 
