@@ -9,6 +9,7 @@ from tgbot.keyboards.inline import time_choice_keyboard
 from tgbot.misc.states import ProductForm
 from tgbot.keyboards.calendar_keyboard import SimpleCalendar
 from tgbot.services import addresses_api, products_api, telegram_user_api
+from tgbot.services.utils import is_valid_product_url
 
 
 async def cancel_handler(
@@ -49,18 +50,36 @@ async def save_shop_name_go_to_price(
     await message.delete()
 
 
-async def save_price_go_to_delivery_date(
+async def save_price_go_to_product_url(
     message: types.Message, state: dispatcher.FSMContext
 ):
     async with state.proxy() as data:
         data['price'] = message.text
 
     await ProductForm.next()
-    keyboard = await SimpleCalendar().start_calendar()
     await message.answer(
-        PRODUCT_FORM_TEXT["ASK_FOR_DATE"], reply_markup=keyboard,
-        parse_mode="Markdown")
+        PRODUCT_FORM_TEXT["ASK_FOR_PRODUCT_URL"], parse_mode="Markdown")
     await message.delete()
+
+
+async def save_product_url_go_to_delivery_date(
+    message: types.Message, state: dispatcher.FSMContext
+):
+    async with state.proxy() as data:
+        data['product_url'] = message.text
+
+    if is_valid_product_url(data["product_url"]):
+        await ProductForm.next()
+        keyboard = await SimpleCalendar().start_calendar()
+        await message.answer(
+            PRODUCT_FORM_TEXT["ASK_FOR_DATE"], reply_markup=keyboard,
+            parse_mode="Markdown")
+        await message.delete()
+    else:
+        ProductForm.product_url.set()
+        await message.answer(
+            PRODUCT_FORM_TEXT["ASK_FOR_PRODUCT_URL_AGAIN"], parse_mode="Markdown")
+        await message.delete()
 
 
 async def save_delivery_date_go_to_delivery_time(
@@ -104,6 +123,7 @@ async def save_delivery_time_and_finish(
             "price": data["price"],
             "delivery_date": f"{delivery_date:%Y-%m-%d %H:%M}",
             "address": user.current_address,
+            "product_url": data["product_url"],
         })
 
     await state.finish()
@@ -127,9 +147,13 @@ def register_states(dp: dispatcher.Dispatcher):
         lambda _: True,
         state=ProductForm.shop_name)
     dp.register_message_handler(
-        save_price_go_to_delivery_date,
+        save_price_go_to_product_url,
         lambda _: True,
         state=ProductForm.price)
+    dp.register_message_handler(
+        save_product_url_go_to_delivery_date,
+        lambda _: True,
+        state=ProductForm.product_url)
     dp.register_callback_query_handler(
         save_delivery_date_go_to_delivery_time,
         lambda _: True,

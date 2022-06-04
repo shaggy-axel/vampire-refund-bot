@@ -41,6 +41,8 @@ PRODUCT_FORM_TEXT = {
     "ASK_FOR_PRODUCT_NAME": "Отправьте название продукта",
     "ASK_FOR_SHOP_NAME": "Отправьте название магазина",
     "ASK_FOR_PRICE": "Отправьте цены",
+    "ASK_FOR_PRODUCT_URL": "Отправьте ссылку на продукт",
+    "ASK_FOR_PRODUCT_URL_AGAIN": "Ссылка неверна, отправьте ссылку на продукт снова",
     "ASK_FOR_DATE": "Выберите дату",
     "ASK_FOR_TIME": "Выберите время",
 }
