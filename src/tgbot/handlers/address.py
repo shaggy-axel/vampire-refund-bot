@@ -1,12 +1,15 @@
-from aiogram import types, Dispatcher
-from tgbot.handlers.user import get_profile
+from aiogram import types, dispatcher
 
+from tgbot.handlers.user import get_profile
 from tgbot.keyboards.inline import get_info_keyboard
 from tgbot.services import addresses_api, telegram_user_api
 from settings.text import BUTTONS_TEXT, MESSAGE_TEXT
 
 
-async def get_info(message: types.Message):
+async def get_info(message: types.Message, state: dispatcher.FSMContext):
+    current_state = await state.get_state()
+    if current_state is not None:
+        await state.finish()
     data = telegram_user_api.get_user(message.from_user)
     user = telegram_user_api.serialize_user(data)
     text = MESSAGE_TEXT["GET_INFO_IF_HAVE_NO_ADDRESS"].format(
@@ -31,8 +34,8 @@ async def get_address(callback: types.CallbackQuery):
     await get_profile(callback.message)
 
 
-def register_address(dp: Dispatcher):
+def register_address(dp: dispatcher.Dispatcher):
     dp.register_message_handler(
-        get_info, lambda message: BUTTONS_TEXT['GET_INFO'] in message.text)
+        get_info, lambda message: BUTTONS_TEXT['GET_INFO'] in message.text, state="*")
     dp.register_callback_query_handler(
         get_address, lambda callback: callback.data.split('#')[0] == 'get_address')

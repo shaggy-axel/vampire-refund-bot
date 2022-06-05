@@ -2,7 +2,7 @@ version: '3.3'
 
 services:
   bot:
-    container_name: ${PROJECT_NAME}-bot
+    container_name: vampire-bot
     build: .
     working_dir: "/usr/src/app/${BOT_NAME:-tg_bot}"
     volumes:
@@ -18,16 +18,17 @@ services:
 
   web:
     image: python:3.9
-    container_name: ${PROJECT_NAME}-web
+    container_name: vampire-web
     volumes:
-      - .:/usr/src/app/${PROJECT_NAME}
-    working_dir: "/usr/src/app/${PROJECT_NAME}"
+      - .:/usr/src/app/vampire
+    working_dir: "/usr/src/app/vampire"
     ports:
       - "8040:8000"
     restart: always
     depends_on:
       - db
-    env_file: .env
+    env_file:
+      - .env
     command: /bin/bash -c 'scripts/run-server.sh'
 
   db:
@@ -35,8 +36,9 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     restart: always
-    container_name: ${PROJECT_NAME}-db
-    env_file: .env
+    container_name: vampire-db
+    env_file:
+      - .env
     ports:
       - 5440:5432
 

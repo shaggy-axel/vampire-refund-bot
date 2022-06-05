@@ -24,7 +24,7 @@ def get_info_keyboard(have_an_address: bool) -> InlineKeyboardMarkup:
     return keyboard
 
 
-def get_status_keyboard():
+def get_status_keyboard() -> InlineKeyboardMarkup:
     keyboard = InlineKeyboardMarkup()
     keyboard.add(
         InlineKeyboardButton(BUTTONS_TEXT["STATUS_USED"], callback_data="status#used"))
@@ -33,11 +33,25 @@ def get_status_keyboard():
     return keyboard
 
 
-def time_choice_keyboard():
+def time_choice_keyboard() -> InlineKeyboardMarkup:
     keyboard = InlineKeyboardMarkup()
     for hour in range(0, 24, 2):
         keyboard.add(
             InlineKeyboardButton(f"{hour:02}:00", callback_data=f"{hour:02}:00"),
             InlineKeyboardButton(f"{hour + 1:02}:00", callback_data=f"{hour + 1:02}:00"),
         )
+    return keyboard
+
+
+def pass_button(text: str, data: str) -> InlineKeyboardButton:
+    return InlineKeyboardButton(text, callback_data=data)
+
+
+def cancel_button(text: str) -> InlineKeyboardButton:
+    return InlineKeyboardButton(text, callback_data="cancel")
+
+
+def cancel_keyboard(text: str) -> InlineKeyboardMarkup:
+    keyboard = InlineKeyboardMarkup()
+    keyboard.add(cancel_button(text))
     return keyboard

@@ -1,13 +1,15 @@
-import logging
 from aiogram import dispatcher, types
 
 from tgbot.misc.states import ProductForm
-from tgbot.keyboards.inline import get_status_keyboard, profile_keyboard
+from tgbot.keyboards.inline import cancel_keyboard, get_status_keyboard, profile_keyboard
 from tgbot.services import addresses_api, telegram_user_api
 from settings.text import BUTTONS_TEXT, MESSAGE_TEXT, PRODUCT_FORM_TEXT
 
 
-async def get_profile(message: types.Message):
+async def get_profile(message: types.Message, state: dispatcher.FSMContext):
+    current_state = await state.get_state()
+    if current_state is not None:
+        await state.finish()
     data = telegram_user_api.get_user(message.from_user)
     user = telegram_user_api.serialize_user(data)
 
@@ -45,14 +47,14 @@ async def change_status_send(callback: types.CallbackQuery, state: dispatcher.FS
 
     await ProductForm.product_name.set()
     await callback.bot.send_message(
-        callback.from_user.id, PRODUCT_FORM_TEXT['ASK_FOR_PRODUCT_NAME'])
+        callback.from_user.id, PRODUCT_FORM_TEXT['ASK_FOR_PRODUCT_NAME'],
+        reply_markup=cancel_keyboard("Отмена"), parse_mode="Markdown")
     await callback.bot.delete_message(callback.from_user.id, callback.message.message_id)
 
 
 def register_user(dp: dispatcher.Dispatcher):
-    logging.info("ЗАРЕГИСТРИРОВАЛ ПОЛЬЗОВАТЕЛЕЙ")
     dp.register_message_handler(
-        get_profile, lambda message: BUTTONS_TEXT['PROFILE'] in message.text)
+        get_profile, lambda message: BUTTONS_TEXT['PROFILE'] in message.text, state="*")
     dp.register_callback_query_handler(
         change_status_choice, lambda callback: 'change_status' == callback.data)
     dp.register_callback_query_handler(

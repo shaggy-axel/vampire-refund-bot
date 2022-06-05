@@ -4,7 +4,7 @@ from pathlib import Path
 
 # TELEGRAM BOT
 BOT_TOKEN = os.environ.get("BOT_TOKEN")
-ADMINS = tuple(map(int, os.environ.get("ADMINS", "").split(',')))
+ADMINS = tuple(map(int, os.environ.get("ADMINS", "123456").split(',')))
 
 DEFAULT_COMMANDS = [
     # (command, description),
@@ -109,6 +109,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = 'static/'
+STATIC_ROOT = 'static'
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

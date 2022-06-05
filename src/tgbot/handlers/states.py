@@ -2,13 +2,16 @@ from datetime import datetime
 from typing import Union
 
 from aiogram import types, dispatcher
-from settings.text import PRODUCT_FORM_TEXT
+from settings.text import MESSAGE_TEXT, PRODUCT_FORM_TEXT
 from tgbot.handlers.user import get_profile
-from tgbot.keyboards.inline import time_choice_keyboard
+from tgbot.keyboards.inline import (
+    cancel_button, cancel_keyboard, pass_button, time_choice_keyboard
+)
 
 from tgbot.misc.states import ProductForm
 from tgbot.keyboards.calendar_keyboard import SimpleCalendar
 from tgbot.services import addresses_api, products_api, telegram_user_api
+from tgbot.services.utils import is_valid_product_url
 
 
 async def cancel_handler(
@@ -33,7 +36,8 @@ async def save_product_name_go_to_shop_name(
 
     await ProductForm.next()
     await message.answer(
-        PRODUCT_FORM_TEXT["ASK_FOR_SHOP_NAME"], parse_mode="Markdown")
+        PRODUCT_FORM_TEXT["ASK_FOR_SHOP_NAME"],
+        reply_markup=cancel_keyboard("Отмена"), parse_mode="Markdown")
     await message.delete()
 
 
@@ -45,30 +49,71 @@ async def save_shop_name_go_to_price(
 
     await ProductForm.next()
     await message.answer(
-        PRODUCT_FORM_TEXT["ASK_FOR_PRICE"], parse_mode="Markdown")
+        PRODUCT_FORM_TEXT["ASK_FOR_PRICE"],
+        reply_markup=cancel_keyboard("Отмена"), parse_mode="Markdown")
     await message.delete()
 
 
-async def save_price_go_to_delivery_date(
+async def save_price_go_to_product_url(
     message: types.Message, state: dispatcher.FSMContext
 ):
     async with state.proxy() as data:
         data['price'] = message.text
 
     await ProductForm.next()
-    keyboard = await SimpleCalendar().start_calendar()
     await message.answer(
-        PRODUCT_FORM_TEXT["ASK_FOR_DATE"], reply_markup=keyboard,
-        parse_mode="Markdown")
+        PRODUCT_FORM_TEXT["ASK_FOR_PRODUCT_URL"],
+        reply_markup=cancel_keyboard("Отмена"), parse_mode="Markdown")
     await message.delete()
 
 
-async def save_delivery_date_go_to_delivery_time(
-    callback: types.CallbackQuery, state: dispatcher.FSMContext
+async def save_product_url_go_to_delivery_date(
+    message: types.Message, state: dispatcher.FSMContext
 ):
-    selected, date = await SimpleCalendar().process_selection(callback, callback.data)
-    if not selected:
-        return
+    async with state.proxy() as data:
+        data['product_url'] = message.text
+
+    if is_valid_product_url(data["product_url"]):
+        await ProductForm.next()
+        keyboard = await SimpleCalendar().start_calendar()
+        await message.answer(
+            PRODUCT_FORM_TEXT["ASK_FOR_DATE"],
+            reply_markup=keyboard.add(
+                pass_button("Пропустить", "pass_date"),
+                cancel_button("Отменить")
+            ),
+            parse_mode="Markdown")
+        await message.delete()
+    else:
+        ProductForm.product_url.set()
+        await message.answer(
+            PRODUCT_FORM_TEXT["ASK_FOR_PRODUCT_URL_AGAIN"], parse_mode="Markdown")
+        await message.delete()
+
+
+async def pass_date_callback(
+    callback: types.CallbackQuery, state: dispatcher.FSMContext,
+):
+    await save_delivery_date_go_to_delivery_time(
+        callback=callback, state=state, pass_state=True)
+
+
+async def pass_time_callback(
+    callback: types.CallbackQuery, state: dispatcher.FSMContext,
+):
+    await save_delivery_time_and_finish(
+        callback=callback, state=state, pass_state=True)
+
+
+async def save_delivery_date_go_to_delivery_time(
+    callback: types.CallbackQuery, state: dispatcher.FSMContext, pass_state: bool = False,
+):
+    if not pass_state:
+        selected, date = await SimpleCalendar().process_selection(callback, callback.data)
+        if not selected:
+            return
+    else:
+        date = None
 
     async with state.proxy() as data:
         data['delivery_date'] = date
@@ -77,23 +122,32 @@ async def save_delivery_date_go_to_delivery_time(
 
     keyboard = time_choice_keyboard()
     await callback.bot.send_message(
-        callback.from_user.id,
-        PRODUCT_FORM_TEXT["ASK_FOR_TIME"],
-        reply_markup=keyboard, parse_mode="Markdown"
+        callback.from_user.id, PRODUCT_FORM_TEXT["ASK_FOR_TIME"],
+        reply_markup=keyboard.add(
+            pass_button("Пропустить", "pass_time"),
+            cancel_button("Отмена")
+        ),
+        parse_mode="Markdown"
     )
 
 
 async def save_delivery_time_and_finish(
-    callback: types.CallbackQuery, state: dispatcher.FSMContext
+    callback: types.CallbackQuery, state: dispatcher.FSMContext, pass_state: bool = False,
 ):
     async with state.proxy() as data:
-        data['delivery_time'] = callback.data
-        delivery_date = datetime(
-            data['delivery_date'].year, data['delivery_date'].month,
-            data['delivery_date'].day, int(data['delivery_time'].split(':')[0]),
-            int(data['delivery_time'].split(':')[1]), 0
-        )
-
+        if pass_state:
+            data['delivery_time'] = None
+        else:
+            data['delivery_time'] = callback.data
+        if data['delivery_date'] or data['delivery_time']:
+            delivery_date = datetime(
+                data['delivery_date'].year, data['delivery_date'].month,
+                data['delivery_date'].day, int(data['delivery_time'].split(':')[0]),
+                int(data['delivery_time'].split(':')[1]), 0
+            )
+            delivery_date = f"{delivery_date:%Y-%m-%d %H:%M}"
+        else:
+            delivery_date = None
         user = telegram_user_api.serialize_user(telegram_user_api.get_user(data['user']))
         addresses_api.change_status(
             address_id=user.current_address, status=data['status'],
@@ -102,11 +156,14 @@ async def save_delivery_time_and_finish(
             "name": data["product_name"],
             "shop_name": data["shop_name"],
             "price": data["price"],
-            "delivery_date": f"{delivery_date:%Y-%m-%d %H:%M}",
+            "delivery_date": delivery_date,
             "address": user.current_address,
+            "product_url": data["product_url"],
         })
 
     await state.finish()
+    await callback.bot.send_message(
+        callback.from_user.id, MESSAGE_TEXT["FINISH_WORDS_FOR_ORDER"], parse_mode="Markdown")
     callback.message.from_user = callback.from_user
     await get_profile(callback.message)
 
@@ -127,14 +184,27 @@ def register_states(dp: dispatcher.Dispatcher):
         lambda _: True,
         state=ProductForm.shop_name)
     dp.register_message_handler(
-        save_price_go_to_delivery_date,
+        save_price_go_to_product_url,
         lambda _: True,
         state=ProductForm.price)
+    dp.register_message_handler(
+        save_product_url_go_to_delivery_date,
+        lambda _: True,
+        state=ProductForm.product_url)
     dp.register_callback_query_handler(
         save_delivery_date_go_to_delivery_time,
-        lambda _: True,
+        lambda callback: callback.data != "pass_date",
         state=ProductForm.delivery_date)
     dp.register_callback_query_handler(
         save_delivery_time_and_finish,
-        lambda _: True,
+        lambda callback: callback.data != "pass_time",
         state=ProductForm.delivery_time)
+
+    dp.register_callback_query_handler(
+        pass_date_callback, lambda callback: callback.data == "pass_date",
+        state=ProductForm.delivery_date,
+    )
+    dp.register_callback_query_handler(
+        pass_time_callback, lambda callback: callback.data == "pass_time",
+        state=ProductForm.delivery_time,
+    )
