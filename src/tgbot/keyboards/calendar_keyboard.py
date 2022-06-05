@@ -1,6 +1,5 @@
 import calendar
 from datetime import datetime, timedelta
-import logging
 
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 from aiogram.utils.callback_data import CallbackData
@@ -83,8 +82,6 @@ class SimpleCalendar:
                 calendar_callback._part_names, data.split(calendar_callback.sep)[1:]
             )
         }
-        logging.info(f"{type(data['year'])} - {data['year']}")
-        logging.info(f"{type(data['month'])} - {data['month']}")
         temp_date = datetime(int(data['year']), int(data['month']), 1)
 
         # processing empty buttons, answering with no action

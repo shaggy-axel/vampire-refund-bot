@@ -14,11 +14,11 @@ def register_all_filters(dp: Dispatcher):
 
 
 def register_all_handlers(dp: Dispatcher):
-    register_states(dp)
     register_user(dp)
     register_menu(dp)
     register_address(dp)
     register_general(dp)
+    register_states(dp)
 
 
 async def register_all_services(dp: Dispatcher):
