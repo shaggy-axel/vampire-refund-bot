@@ -36,6 +36,9 @@ BUTTONS_TEXT = {
     "GET_INFO_NO_THANKS": "🇨🇿 Чехия",
     "STATUS_USED": '✅ Товар отправлен',
     "STATUS_HOLD": '😡 Нужен новый адрес',
+
+    "ORDERS": "Посылки",
+    "CREATE_ADDRESS": "Добавить адрес",
 }
 
 PRODUCT_FORM_TEXT = {

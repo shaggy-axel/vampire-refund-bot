@@ -19,7 +19,7 @@ async def menu(message: types.Message):
         text = MESSAGE_TEXT["MENU_COMMAND"]
         telegram_user_api.sign_up_user(message.from_user)
 
-    keyboard = menu_keyboard()
+    keyboard = menu_keyboard(is_admin=telegram_user_api.is_admin(message.from_user))
     await message.bot.send_message(
         message.from_user.id, text,
         reply_markup=keyboard, parse_mode="Markdown")
