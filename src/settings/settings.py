@@ -13,6 +13,16 @@ DEFAULT_COMMANDS = [
     ("menu", "Output menu"),
 ]
 
+USA_CODE = 'usa'
+UK_CODE = 'uk'
+CZ_CODE = 'cz'
+
+COUNTRY_CHOICES = (
+    (USA_CODE, 'United States'),
+    (UK_CODE, 'United Kingdom'),
+    (CZ_CODE, 'Czechia'),
+)
+
 # DATABASE
 POSTGRES_DB = os.environ.get('POSTGRES_DB')
 POSTGRES_USER = os.environ.get('POSTGRES_USER')
@@ -101,6 +111,10 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+}
 
 # Internationalization
 LANGUAGE_CODE = 'en-us'

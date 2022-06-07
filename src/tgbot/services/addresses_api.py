@@ -26,8 +26,8 @@ def get_address_info(address_id: Union[int, str]) -> dict:
     return response.json()
 
 
-def get_new_address():
-    response = req.get(f"{BASE_API}address/")
+def get_new_address(country: str):
+    response = req.get(f"{BASE_API}address?country={country}")
     return response.json()
 
 

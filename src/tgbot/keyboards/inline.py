@@ -17,8 +17,9 @@ def get_info_keyboard(have_an_address: bool) -> InlineKeyboardMarkup:
     """ Return `get info` keyboard """
     keyboard = InlineKeyboardMarkup()
     if not have_an_address:
+        for country_code, country in BUTTONS_TEXT["GET_INFO_OK"].items():
+            keyboard.insert(InlineKeyboardButton(country, callback_data=f"get_address:{country_code}"))
         keyboard.add(
-            InlineKeyboardButton(BUTTONS_TEXT["GET_INFO_OK"], callback_data="get_address"),
             InlineKeyboardButton(BUTTONS_TEXT["GET_INFO_NO_THANKS"], callback_data="menu"),
         )
     return keyboard

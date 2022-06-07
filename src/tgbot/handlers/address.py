@@ -26,7 +26,7 @@ async def get_info(message: types.Message, state: dispatcher.FSMContext):
 
 
 async def get_address(callback: types.CallbackQuery):
-    data = addresses_api.get_new_address()
+    data = addresses_api.get_new_address(country=callback.data.split(':')[1])
     addresses = addresses_api.serialize_addresses(data)
     telegram_user_api.use_address(callback.from_user, addresses.id)
 
@@ -38,4 +38,4 @@ def register_address(dp: dispatcher.Dispatcher):
     dp.register_message_handler(
         get_info, lambda message: BUTTONS_TEXT['GET_INFO'] in message.text, state="*")
     dp.register_callback_query_handler(
-        get_address, lambda callback: callback.data.split('#')[0] == 'get_address')
+        get_address, lambda callback: callback.data.split(':')[0] == 'get_address')

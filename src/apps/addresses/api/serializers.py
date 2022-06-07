@@ -12,7 +12,8 @@ class AddressRetrieveUpdateSerializer(serializers.ModelSerializer):
             'id', 'name', 'line_1', 'line_2',
             'city', 'state', 'zip_code', 'phone',
             'status', 'used_by', 'used_at',
-            'using_now', 'user_in_group'
+            'using_now', 'user_in_group',
+            'country'
         )
 
     def get_using_now(self, obj: Address) -> bool:
@@ -26,5 +27,5 @@ class AddressCreateSerializer(serializers.ModelSerializer):
         model = Address
         fields = (
             'name', 'line_1', 'line_2',
-            'city', 'state', 'zip_code', 'phone',
+            'city', 'state', 'zip_code', 'phone', 'country'
         )
