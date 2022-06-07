@@ -8,7 +8,7 @@ class TelegramUserRetrieveSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TelegramUser
-        fields = ('telegram_id', 'username', 'using_now', 'current_address')
+        fields = ('telegram_id', 'username', 'using_now', 'current_address', 'is_admin')
 
     def get_using_now(self, obj):
         return bool(obj.current_address)

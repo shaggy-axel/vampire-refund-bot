@@ -12,6 +12,7 @@ class TelegramUser(models.Model):
     last_name = models.CharField(max_length=100, null=True, blank=True)
     current_address = models.ForeignKey(
         'addresses.Address', on_delete=models.SET_NULL, null=True, blank=True)
+    is_admin = models.BooleanField(default=False)
 
     class Meta:
         db_table = 'telegram_users'
