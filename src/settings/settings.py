@@ -5,6 +5,7 @@ from pathlib import Path
 # TELEGRAM BOT
 BOT_TOKEN = os.environ.get("BOT_TOKEN")
 ADMINS = tuple(map(int, os.environ.get("ADMINS", "123456").split(',')))
+GROUP_ID = os.environ.get("GROUP_ID", "-543210")
 
 DEFAULT_COMMANDS = [
     # (command, description),

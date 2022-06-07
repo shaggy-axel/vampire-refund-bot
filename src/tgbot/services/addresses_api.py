@@ -31,10 +31,10 @@ def get_new_address():
     return response.json()
 
 
-def change_status(address_id: int, status: str = "used"):
+def change_status(address_id: int, status: str = "used", user_in_group: str = "left"):
     return req.patch(
         f'{BASE_API}addresses/{address_id}/',
-        data={"status": status}
+        data={"status": status, "user_in_group": user_in_group}
     ).json()
 
 
