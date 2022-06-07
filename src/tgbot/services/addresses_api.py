@@ -26,15 +26,15 @@ def get_address_info(address_id: Union[int, str]) -> dict:
     return response.json()
 
 
-def get_new_address():
-    response = req.get(f"{BASE_API}address/")
+def get_new_address(country: str):
+    response = req.get(f"{BASE_API}address?country={country}")
     return response.json()
 
 
-def change_status(address_id: int, status: str = "used"):
+def change_status(address_id: int, status: str = "used", user_in_group: str = "left"):
     return req.patch(
         f'{BASE_API}addresses/{address_id}/',
-        data={"status": status}
+        data={"status": status, "user_in_group": user_in_group}
     ).json()
 
 

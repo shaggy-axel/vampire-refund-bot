@@ -5,12 +5,23 @@ from pathlib import Path
 # TELEGRAM BOT
 BOT_TOKEN = os.environ.get("BOT_TOKEN")
 ADMINS = tuple(map(int, os.environ.get("ADMINS", "123456").split(',')))
+GROUP_ID = os.environ.get("GROUP_ID", "-543210")
 
 DEFAULT_COMMANDS = [
     # (command, description),
     ("start", "Sign up"),
     ("menu", "Output menu"),
 ]
+
+USA_CODE = 'usa'
+UK_CODE = 'uk'
+CZ_CODE = 'cz'
+
+COUNTRY_CHOICES = (
+    (USA_CODE, 'United States'),
+    (UK_CODE, 'United Kingdom'),
+    (CZ_CODE, 'Czechia'),
+)
 
 # DATABASE
 POSTGRES_DB = os.environ.get('POSTGRES_DB')
@@ -100,6 +111,10 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+}
 
 # Internationalization
 LANGUAGE_CODE = 'en-us'

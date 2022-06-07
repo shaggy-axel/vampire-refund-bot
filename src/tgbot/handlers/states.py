@@ -11,7 +11,7 @@ from tgbot.keyboards.inline import (
 from tgbot.misc.states import ProductForm
 from tgbot.keyboards.calendar_keyboard import SimpleCalendar
 from tgbot.services import addresses_api, products_api, telegram_user_api
-from tgbot.services.utils import is_valid_product_url
+from tgbot.services.utils import get_user_group_status, is_valid_product_url
 
 
 async def cancel_handler(
@@ -149,8 +149,10 @@ async def save_delivery_time_and_finish(
         else:
             delivery_date = None
         user = telegram_user_api.serialize_user(telegram_user_api.get_user(data['user']))
+        user_in_group = await get_user_group_status(callback.bot, user.telegram_id)
         addresses_api.change_status(
             address_id=user.current_address, status=data['status'],
+            user_in_group=user_in_group
         )
         products_api.bind_product(data={
             "name": data["product_name"],

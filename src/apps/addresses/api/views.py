@@ -1,4 +1,5 @@
 from rest_framework import viewsets, views, response, status
+from rest_framework.request import Request
 
 from apps.addresses.models import Address
 from apps.addresses.api.serializers import (
@@ -17,13 +18,14 @@ class AddressAPIViewSet(viewsets.ModelViewSet):
 
 
 class GetAddressAPI(views.APIView):
-    def get(self, request):
-        obj = Address.objects.filter(status='notused')
+    def get(self, request: Request):
+        country = request.query_params['country']
+        obj = Address.objects.filter(status='notused', country=country)
         if obj:
             obj = obj.first()
             data = AddressRetrieveUpdateSerializer(obj).data
             return response.Response(data, status.HTTP_200_OK)
         return response.Response(
-            {"error": "does not exists `not used` address"},
+            {"error": f"does not exists address with status notused and country {country}"},
             status.HTTP_404_NOT_FOUND
         )

@@ -1,3 +1,14 @@
+from emoji import emojize
+
+from settings import settings
+
+
+COUNTRY_DISPLAY = {
+    settings.USA_CODE: emojize(":United_States: USA"),
+    settings.UK_CODE: emojize(":United_Kingdom: UK"),
+    settings.CZ_CODE: emojize(":Czechia: CZ"),
+}
+
 MESSAGE_TEXT = {
     "START_COMMAND": "Пожалуйста, выберите действие.",
     "MENU_COMMAND": "Пожалуйста, выберите действие.",
@@ -32,10 +43,13 @@ BUTTONS_TEXT = {
     "CONTACTS": "📘 FAQ",
 
     "CHANGE_STATUS": "Адрес использован",
-    "GET_INFO_OK": "🇺🇸 США",
-    "GET_INFO_NO_THANKS": "🇨🇿 Чехия",
+    "GET_INFO_OK": COUNTRY_DISPLAY,
+    "GET_INFO_NO_THANKS": "No Thanks",
     "STATUS_USED": '✅ Товар отправлен',
     "STATUS_HOLD": '😡 Нужен новый адрес',
+
+    "ORDERS": "Посылки",
+    "CREATE_ADDRESS": "Добавить адрес",
 }
 
 PRODUCT_FORM_TEXT = {
@@ -46,5 +60,4 @@ PRODUCT_FORM_TEXT = {
     "ASK_FOR_PRODUCT_URL_AGAIN": "Ссылка неверна, отправьте ссылку на продукт снова",
     "ASK_FOR_DATE": "📅 Выберите дату доставки",
     "ASK_FOR_TIME": "⏲️ Выберите время доставки",
-
 }

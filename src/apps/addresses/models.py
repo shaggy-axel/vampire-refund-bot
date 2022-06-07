@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 
@@ -15,6 +16,7 @@ class Address(models.Model):
         ('using', 'Using'),
         ('used', 'Used'),
         ('hold', 'Hold'),
+        ('delivered', 'Delivered'),
     )
 
     status = models.CharField(
@@ -26,6 +28,10 @@ class Address(models.Model):
         null=True, blank=True
     )
     used_at = models.DateTimeField(null=True, blank=True)
+    user_in_group = models.CharField(max_length=100, null=True, blank=True)
+    country = models.CharField(
+        max_length=30, choices=settings.COUNTRY_CHOICES,
+        default=settings.COUNTRY_CHOICES[0][0])
 
     class Meta:
         db_table = 'addresses'

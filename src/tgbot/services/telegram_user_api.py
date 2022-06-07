@@ -23,9 +23,14 @@ def sign_up_user(user: User):
     req.post(f"{BASE_API}users/", data=data)
 
 
-def get_user(user: User):
+def get_user(user: User) -> dict:
     response = req.get(f'{BASE_API}users/{user.id}/')
     return response.json()
+
+
+def is_admin(user: User) -> bool:
+    data = get_user(user)
+    return data['is_admin']
 
 
 def use_address(user: User, current_address: int):
