@@ -30,6 +30,7 @@ class GetAddressAPI(views.APIView):
             status.HTTP_404_NOT_FOUND
         )
 
+
 class GetUsedAddressesAPI(views.APIView):
     def get(self, request):
         obj = Address.objects.filter(status="used")

@@ -4,6 +4,7 @@ from settings.text import BUTTONS_TEXT, ADDRESS_FORM_TEXT
 from tgbot.misc.states import AddressForm
 from tgbot.services import addresses_api
 
+
 async def orders(message: types.Message, state: dispatcher.FSMContext):
     current_state = await state.get_state()
     if current_state is not None:
@@ -39,7 +40,8 @@ async def create_address(message: types.Message, state: dispatcher.FSMContext):
 
     await AddressForm.name.set()
 
-    await message.bot.send_message(message.from_user.id, ADDRESS_FORM_TEXT['ASK_FOR_NAME'], parse_mode='Markdown')
+    await message.bot.send_message(
+        message.from_user.id, ADDRESS_FORM_TEXT['ASK_FOR_NAME'], parse_mode='Markdown')
 
 
 def register_admin(dp: dispatcher.Dispatcher):
