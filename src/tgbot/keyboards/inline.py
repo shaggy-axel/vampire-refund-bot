@@ -57,3 +57,11 @@ def cancel_keyboard(text: str) -> InlineKeyboardMarkup:
     keyboard = InlineKeyboardMarkup()
     keyboard.add(cancel_button(text))
     return keyboard
+
+
+def get_countries() -> InlineKeyboardMarkup:
+    keyboard = InlineKeyboardMarkup()
+    for country_code, country in BUTTONS_TEXT["GET_INFO_OK"].items():
+        keyboard.insert(InlineKeyboardButton(
+            country, callback_data=f"create_address:{country_code}"))
+    return keyboard

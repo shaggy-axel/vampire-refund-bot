@@ -34,7 +34,6 @@ MESSAGE_TEXT = {
     ),
 
     "CHOICES_STATUS_FOR_ADDRESS": "Адрес использован",
-    "FINISH_WORDS_FOR_ORDER": "Спасибо за заказ",
 }
 
 BUTTONS_TEXT = {
@@ -60,4 +59,17 @@ PRODUCT_FORM_TEXT = {
     "ASK_FOR_PRODUCT_URL_AGAIN": "Ссылка неверна, отправьте ссылку на продукт снова",
     "ASK_FOR_DATE": "📅 Выберите дату доставки",
     "ASK_FOR_TIME": "⏲️ Выберите время доставки",
+    "FINISH": "Спасибо за заказ",
+}
+
+ADDRESS_FORM_TEXT = {
+    "ASK_FOR_NAME": "Напишите имя",
+    "ASK_FOR_LINE_1": "Line 1:",
+    "ASK_FOR_LINE_2": "Line 2:",
+    "ASK_FOR_CITY": "City:",
+    "ASK_FOR_STATE": "State:",
+    "ASK_FOR_ZIP_CODE": "Zip Code:",
+    "ASK_FOR_PHONE": "PHONE:",
+    "ASK_FOR_COUNTRY": "Country:",
+    "FINISH": "Адрес сохранен",
 }

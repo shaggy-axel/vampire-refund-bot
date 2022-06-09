@@ -45,6 +45,10 @@ def change_status(address_id: int, status: str = "used", user_in_group: str = "l
     ).json()
 
 
+def create_address(data: dict):
+    req.post(f"{BASE_API}addresses-set/", data=data)
+
+
 def serialize_addresses(data: Union[list[dict], dict]):
     if isinstance(data, dict):
         return AddressTuple(
