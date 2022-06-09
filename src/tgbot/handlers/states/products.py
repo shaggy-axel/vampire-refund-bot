@@ -167,7 +167,7 @@ async def save_delivery_time_and_finish(
     await callback.bot.send_message(
         callback.from_user.id, PRODUCT_FORM_TEXT["FINISH"], parse_mode="Markdown")
     callback.message.from_user = callback.from_user
-    await get_profile(callback.message)
+    await get_profile(callback.message, state)
 
 
 def register_product_states(dp: dispatcher.Dispatcher):
