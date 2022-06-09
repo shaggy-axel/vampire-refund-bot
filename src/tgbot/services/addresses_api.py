@@ -19,21 +19,28 @@ class AddressTuple(NamedTuple):
     used_by: Optional[int]
     used_at: Optional[Union[str, datetime]]
     using_now: bool
+    country: str
+    user_in_group: str
 
 
 def get_address_info(address_id: Union[int, str]) -> dict:
-    response = req.get(f"{BASE_API}addresses/{address_id}/")
+    response = req.get(f"{BASE_API}addresses-set/{address_id}/")
+    return response.json()
+
+
+def get_used_addresses() -> dict:
+    response = req.get(f"{BASE_API}addresses/used/")
     return response.json()
 
 
 def get_new_address(country: str):
-    response = req.get(f"{BASE_API}address?country={country}")
+    response = req.get(f"{BASE_API}addresses/first/?country={country}")
     return response.json()
 
 
 def change_status(address_id: int, status: str = "used", user_in_group: str = "left"):
     return req.patch(
-        f'{BASE_API}addresses/{address_id}/',
+        f'{BASE_API}addresses-set/{address_id}/',
         data={"status": status, "user_in_group": user_in_group}
     ).json()
 
@@ -53,6 +60,8 @@ def serialize_addresses(data: Union[list[dict], dict]):
             used_by=data["used_by"],
             used_at=data["used_at"],
             using_now=data['using_now'],
+            country=data['country'],
+            user_in_group=data['user_in_group'],
         )
     return [
         AddressTuple(
@@ -68,5 +77,7 @@ def serialize_addresses(data: Union[list[dict], dict]):
             used_by=address["used_by"],
             used_at=address["used_at"],
             using_now=address['using_now'],
+            country=address['country'],
+            user_in_group=address['user_in_group'],
         ) for address in data
     ]

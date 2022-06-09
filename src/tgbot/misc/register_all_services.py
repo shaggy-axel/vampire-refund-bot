@@ -15,6 +15,7 @@ def register_all_filters(dp: Dispatcher):
 
 def register_all_handlers(dp: Dispatcher):
     register_user(dp)
+    register_admin(dp)
     register_menu(dp)
     register_address(dp)
     register_general(dp)

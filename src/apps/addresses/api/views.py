@@ -29,3 +29,9 @@ class GetAddressAPI(views.APIView):
             {"error": f"does not exists address with status notused and country {country}"},
             status.HTTP_404_NOT_FOUND
         )
+
+class GetUsedAddressesAPI(views.APIView):
+    def get(self, request):
+        obj = Address.objects.filter(status="used")
+        return response.Response(
+            AddressRetrieveUpdateSerializer(obj, many=True).data, status.HTTP_200_OK)
