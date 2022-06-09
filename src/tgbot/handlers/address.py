@@ -25,13 +25,13 @@ async def get_info(message: types.Message, state: dispatcher.FSMContext):
     await message.bot.delete_message(message.chat.id, message.message_id)
 
 
-async def get_address(callback: types.CallbackQuery):
+async def get_address(callback: types.CallbackQuery, state: dispatcher.FSMContext):
     data = addresses_api.get_new_address(country=callback.data.split(':')[1])
     addresses = addresses_api.serialize_addresses(data)
     telegram_user_api.use_address(callback.from_user, addresses.id)
 
     callback.message.from_user = callback.from_user
-    await get_profile(callback.message)
+    await get_profile(callback.message, state)
 
 
 def register_address(dp: dispatcher.Dispatcher):
