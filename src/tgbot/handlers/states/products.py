@@ -112,23 +112,25 @@ async def save_delivery_date_go_to_delivery_time(
         selected, date = await SimpleCalendar().process_selection(callback, callback.data)
         if not selected:
             return
+
+        async with state.proxy() as data:
+            data['delivery_date'] = date
+
+        await ProductForm.next()
+
+        keyboard = time_choice_keyboard()
+        await callback.bot.send_message(
+            callback.from_user.id, PRODUCT_FORM_TEXT["ASK_FOR_TIME"],
+            reply_markup=keyboard.add(
+                pass_button("Пропустить", "pass_time"),
+                cancel_button("Отмена")
+            ),
+            parse_mode="Markdown"
+        )
     else:
-        date = None
-
-    async with state.proxy() as data:
-        data['delivery_date'] = date
-
-    await ProductForm.next()
-
-    keyboard = time_choice_keyboard()
-    await callback.bot.send_message(
-        callback.from_user.id, PRODUCT_FORM_TEXT["ASK_FOR_TIME"],
-        reply_markup=keyboard.add(
-            pass_button("Пропустить", "pass_time"),
-            cancel_button("Отмена")
-        ),
-        parse_mode="Markdown"
-    )
+        async with state.proxy() as data:
+            data['delivery_date'] = None
+        await pass_time_callback(callback, state)
 
 
 async def save_delivery_time_and_finish(
@@ -136,10 +138,10 @@ async def save_delivery_time_and_finish(
 ):
     async with state.proxy() as data:
         if pass_state:
-            data['delivery_time'] = None
+            data['delivery_time'] = '0:0'
         else:
             data['delivery_time'] = callback.data
-        if data['delivery_date'] or data['delivery_time']:
+        if data['delivery_date']:
             delivery_date = datetime(
                 data['delivery_date'].year, data['delivery_date'].month,
                 data['delivery_date'].day, int(data['delivery_time'].split(':')[0]),
