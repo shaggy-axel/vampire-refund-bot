@@ -1,11 +1,16 @@
-from rest_framework.views import APIView, Response, status
+from rest_framework.views import APIView, Response, status, Request
 
 from apps.products.api.serializers import ProductSerializer
 from apps.products.models import Product
 
 
 class ProductAPIView(APIView):
-    def get(self, request):
+    def get(self, request: Request):
+        address = request.query_params.get("address", None)
+        if address:
+            product = Product.objects.filter(address__id=address).first()
+            serializer = ProductSerializer(product)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         products = Product.objects.all()
         serializer = ProductSerializer(products, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
