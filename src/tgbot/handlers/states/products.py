@@ -5,13 +5,12 @@ from aiogram import types, dispatcher
 from settings.text import PRODUCT_FORM_TEXT
 from tgbot.handlers.user import get_profile
 from tgbot.keyboards.inline import (
-    cancel_button, cancel_keyboard, pass_button, time_choice_keyboard
-)
-
+    cancel_button, cancel_keyboard, pass_button, time_choice_keyboard)
 from tgbot.misc.states import ProductForm
 from tgbot.keyboards.calendar_keyboard import SimpleCalendar
 from tgbot.services import addresses_api, products_api, telegram_user_api
-from tgbot.services.utils import get_user_group_status, is_valid_product_url
+from tgbot.services.utils import (
+    get_user_group_status, is_valid_product_url, send_message_to_all_of_admin_users)
 
 
 async def cancel_handler(
@@ -150,24 +149,25 @@ async def save_delivery_time_and_finish(
             delivery_date = f"{delivery_date:%Y-%m-%d %H:%M}"
         else:
             delivery_date = None
-        user = telegram_user_api.serialize_user(telegram_user_api.get_user(data['user']))
+        user_data = telegram_user_api.get_user(data['user'])
+        user = telegram_user_api.serialize_user(user_data)
         user_in_group = await get_user_group_status(callback.bot, user.telegram_id)
-        addresses_api.change_status(
+        address_data = addresses_api.change_status(
             address_id=user.current_address, status=data['status'],
-            user_in_group=user_in_group
-        )
-        products_api.bind_product(data={
-            "name": data["product_name"],
-            "shop_name": data["shop_name"],
-            "price": data["price"],
-            "delivery_date": delivery_date,
-            "address": user.current_address,
-            "product_url": data["product_url"],
-        })
+            user_in_group=user_in_group)
+
+        product_data = {
+            "name": data["product_name"], "shop_name": data["shop_name"],
+            "price": data["price"], "delivery_date": delivery_date,
+            "address": user.current_address, "product_url": data["product_url"]}
+        products_api.bind_product(data=product_data)
 
     await state.finish()
     await callback.bot.send_message(
         callback.from_user.id, PRODUCT_FORM_TEXT["FINISH"], parse_mode="Markdown")
+
+    # send message to all of admin users
+    await send_message_to_all_of_admin_users(callback, product_data, user_data, address_data)
     callback.message.from_user = callback.from_user
     await get_profile(callback.message, state)
 
@@ -206,9 +206,7 @@ def register_product_states(dp: dispatcher.Dispatcher):
 
     dp.register_callback_query_handler(
         pass_date_callback, lambda callback: callback.data == "pass_date",
-        state=ProductForm.delivery_date,
-    )
+        state=ProductForm.delivery_date)
     dp.register_callback_query_handler(
         pass_time_callback, lambda callback: callback.data == "pass_time",
-        state=ProductForm.delivery_time,
-    )
+        state=ProductForm.delivery_time)

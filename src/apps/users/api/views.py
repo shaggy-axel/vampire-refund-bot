@@ -11,6 +11,7 @@ from apps.users.api.serializers import (
 class TelegramUserAPIViewSet(viewsets.ModelViewSet):
     queryset = TelegramUser.objects.all()
     lookup_field = 'telegram_id'
+    filterset_fields = ['is_admin']
 
     def get_serializer_class(self):
         if self.request.method.lower() == 'get':

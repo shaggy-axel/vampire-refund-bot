@@ -73,3 +73,20 @@ ADDRESS_FORM_TEXT = {
     "ASK_FOR_COUNTRY": "Country:",
     "FINISH": "Адрес сохранен",
 }
+
+NOTIFY_TEXT_TO_ADMINS_ABOUT_USED_ADDRESS = (
+    # user
+    "```\n{user__telegram_id}, {user__username},\n"
+    "{user__using_now}, {user__current_address}\n"
+
+    # address
+    "{address__id}, {address__name}, {address__line_1}, {address__line_2},\n"
+    "{address__city}, {address__state}, {address__zip_code}, {address__phone},\n"
+    "{address__status}, {address__used_by}, {address__used_at},\n"
+    "{address__using_now}, {address__user_in_group},\n"
+    "{address__country}\n"
+
+    # product
+    "{product__name}, {product__shop_name}, {product__price},\n"
+    "{product__delivery_date}, {product__address}, {product__product_url}\n```"
+)
