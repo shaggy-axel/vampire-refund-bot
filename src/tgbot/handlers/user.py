@@ -4,6 +4,7 @@ from tgbot.misc.states import ProductForm
 from tgbot.keyboards.inline import cancel_keyboard, get_status_keyboard, profile_keyboard
 from tgbot.services import addresses_api, telegram_user_api
 from settings.text import BUTTONS_TEXT, MESSAGE_TEXT, PRODUCT_FORM_TEXT
+from tgbot.services.utils import get_user_group_status
 
 
 async def get_profile(message: types.Message, state: dispatcher.FSMContext):
@@ -41,15 +42,33 @@ async def change_status_choice(callback: types.CallbackQuery):
 
 async def change_status_send(callback: types.CallbackQuery, state: dispatcher.FSMContext):
     status = callback.data.split('#')[1]
-    async with state.proxy() as data:
-        data['status'] = status
-        data['user'] = callback.from_user
+    if status != "hold":
+        async with state.proxy() as data:
+            data['status'] = status
+            data['user'] = callback.from_user
 
-    await ProductForm.product_name.set()
-    await callback.bot.send_message(
-        callback.from_user.id, PRODUCT_FORM_TEXT['ASK_FOR_PRODUCT_NAME'],
-        reply_markup=cancel_keyboard("Отмена"), parse_mode="Markdown")
-    await callback.bot.delete_message(callback.from_user.id, callback.message.message_id)
+        await ProductForm.product_name.set()
+        await callback.bot.send_message(
+            callback.from_user.id, PRODUCT_FORM_TEXT['ASK_FOR_PRODUCT_NAME'],
+            reply_markup=cancel_keyboard("Отмена"), parse_mode="Markdown")
+        await callback.bot.delete_message(callback.from_user.id, callback.message.message_id)
+        return
+
+    # change status
+    user_data = telegram_user_api.get_user(callback.from_user)
+    user = telegram_user_api.serialize_user(user_data)
+    user_in_group = await get_user_group_status(callback.bot, user.telegram_id)
+    address_data = addresses_api.change_status(
+        address_id=user.current_address, status=status,
+        user_in_group=user_in_group)
+
+    # get new address
+    data = addresses_api.get_new_address(country=address_data['country'])
+    addresses = addresses_api.serialize_addresses(data)
+    telegram_user_api.use_address(callback.from_user, addresses.id)
+
+    callback.message.from_user = callback.from_user
+    await get_profile(callback.message, state)
 
 
 def register_user(dp: dispatcher.Dispatcher):
