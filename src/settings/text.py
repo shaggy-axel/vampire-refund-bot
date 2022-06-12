@@ -34,6 +34,8 @@ MESSAGE_TEXT = {
     ),
 
     "CHOICES_STATUS_FOR_ADDRESS": "Адрес использован",
+    "ORDERS": "Посылки:",
+    "AFTER_DELIVERED": "Successfuly changed status to delivered",
 }
 
 BUTTONS_TEXT = {
@@ -49,6 +51,10 @@ BUTTONS_TEXT = {
 
     "ORDERS": "Посылки",
     "CREATE_ADDRESS": "Добавить адрес",
+
+    "DELIVERED": "Delivered",
+    "BACK_TO_ORDERS": "<- Посылки",
+    "BACK_TO_MENU": "<<- Меню",
 }
 
 PRODUCT_FORM_TEXT = {
@@ -90,3 +96,6 @@ NOTIFY_TEXT_TO_ADMINS_ABOUT_USED_ADDRESS = (
     "{product__name}, {product__shop_name}, {product__price},\n"
     "{product__delivery_date}, {product__address}, {product__product_url}\n```"
 )
+
+# change if you need to another text: string type
+ALL_INFO_IN_ORDER_PAGE = NOTIFY_TEXT_TO_ADMINS_ABOUT_USED_ADDRESS

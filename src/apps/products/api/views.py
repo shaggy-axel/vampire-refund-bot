@@ -6,9 +6,14 @@ from apps.products.models import Product
 
 class ProductAPIView(APIView):
     def get(self, request: Request):
-        address = request.query_params.get("address", None)
+        address = request.query_params.get("address")
         if address:
             product = Product.objects.filter(address__id=address).first()
+            serializer = ProductSerializer(product)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        product_id = request.query_params.get("product_id")
+        if product_id:
+            product = Product.objects.get(id=product_id)
             serializer = ProductSerializer(product)
             return Response(serializer.data, status=status.HTTP_200_OK)
         products = Product.objects.all()
