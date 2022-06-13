@@ -1,6 +1,7 @@
 from aiogram import dispatcher, types
 from settings.text import ADDRESS_FORM_TEXT
-from tgbot.keyboards.inline import cancel_button, cancel_keyboard, get_countries, spoof_or_save_button
+from tgbot.keyboards.inline import (
+    cancel_button, cancel_keyboard, get_countries, spoof_or_save_button)
 
 from tgbot.misc.states import AddressForm
 from tgbot.services import addresses_api
@@ -12,8 +13,8 @@ async def save_name_go_to_street(message: types.Message, state: dispatcher.FSMCo
         data['name'] = message.text
     await AddressForm.next()
     await message.bot.send_message(
-        message.from_user.id, ADDRESS_FORM_TEXT["ASK_FOR_STREET"], reply_markup=cancel_keyboard("Отменить"),
-        parse_mode="Markdown")
+        message.from_user.id, ADDRESS_FORM_TEXT["ASK_FOR_STREET"],
+        reply_markup=cancel_keyboard("Отменить"), parse_mode="Markdown")
 
 
 async def save_street_go_to_house(message: types.Message, state: dispatcher.FSMContext):
@@ -94,8 +95,8 @@ async def save_country_finish(callback: types.CallbackQuery, state: dispatcher.F
         })
 
     await callback.bot.send_message(
-        callback.from_user.id, ADDRESS_FORM_TEXT["SPOOF_OR_SAVE"], reply_markup=spoof_or_save_button(),
-        parse_mode="Markdown")
+        callback.from_user.id, ADDRESS_FORM_TEXT["SPOOF_OR_SAVE"],
+        reply_markup=spoof_or_save_button(), parse_mode="Markdown")
     await callback.bot.delete_message(callback.from_user.id, callback.message.message_id)
 
 
@@ -143,6 +144,8 @@ def register_address_states(dp: dispatcher.Dispatcher):
     dp.register_message_handler(save_zip_code_go_to_phone, state=AddressForm.zip_code)
     dp.register_message_handler(save_phone_go_to_country, state=AddressForm.phone)
     dp.register_callback_query_handler(
-        save_country_finish, lambda cb: cb.data.split(':')[0] == "create_address", state=AddressForm.country)
+        save_country_finish, lambda cb: cb.data.split(':')[0] == "create_address",
+        state=AddressForm.country)
     dp.register_callback_query_handler(
-        spoof_or_save, lambda cb: cb.data.split(':')[0] == "spoof_address", state=AddressForm.country)
+        spoof_or_save, lambda cb: cb.data.split(':')[0] == "spoof_address",
+        state=AddressForm.country)

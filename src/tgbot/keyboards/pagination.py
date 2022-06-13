@@ -26,5 +26,5 @@ def get_back_to_orders_keyboard(
     keyboard.add(types.InlineKeyboardButton(
         BUTTONS_TEXT["BACK_TO_ORDERS"], callback_data=f"orders#{current_page}"))
     keyboard.insert(types.InlineKeyboardButton(
-        BUTTONS_TEXT["BACK_TO_MENU"], callback_data=f"menu"))
+        BUTTONS_TEXT["BACK_TO_MENU"], callback_data="menu"))
     return keyboard

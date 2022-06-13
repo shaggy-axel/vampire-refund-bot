@@ -26,7 +26,7 @@ class AddressRetrieveUpdateSerializer(serializers.ModelSerializer):
     def get_product_id(self, obj: Address) -> Optional[int]:
         try:
             return obj.product.id
-        except:
+        except Address.product.RelatedObjectDoesNotExist:
             return
 
 

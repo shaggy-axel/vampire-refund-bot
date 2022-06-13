@@ -3,12 +3,12 @@ import random
 from settings.settings import SPOOFER_SETTINGS
 
 
-
 def generate(text: str) -> str:
     result = ""
     for letter in text:
         result += random.choice(SPOOFER_SETTINGS['alph'][letter.lower()])
     return result
+
 
 def generate_spoofing_addresses(original_address: dict):
     generate_fields = ["name", "street", "city", "state"]
