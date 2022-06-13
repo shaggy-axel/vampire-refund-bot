@@ -12,8 +12,9 @@ class ProductForm(StatesGroup):
 
 class AddressForm(StatesGroup):
     name = State()
-    line_1 = State()
-    line_2 = State()
+    street = State()
+    house = State()
+    apartments = State()
     city = State()
     state = State()
     zip_code = State()

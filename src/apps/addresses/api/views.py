@@ -33,6 +33,6 @@ class GetAddressAPI(views.APIView):
 
 class GetUsedAddressesAPI(views.APIView):
     def get(self, request):
-        obj = Address.objects.filter(status="used")
+        obj = Address.objects.filter(status="used").exclude(product=None)
         return response.Response(
             AddressRetrieveUpdateSerializer(obj, many=True).data, status.HTTP_200_OK)

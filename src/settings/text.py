@@ -35,6 +35,8 @@ MESSAGE_TEXT = {
     ),
 
     "CHOICES_STATUS_FOR_ADDRESS": "Адрес использован",
+    "ORDERS": "Посылки:",
+    "AFTER_DELIVERED": "Successfuly changed status to delivered",
 }
 
 BUTTONS_TEXT = {
@@ -48,8 +50,14 @@ BUTTONS_TEXT = {
     "STATUS_USED": '✅ Заказ успешно создан!',
     "STATUS_HOLD": '😡 Hold / Ban / Suspend',
 
+
     "ORDERS": "📦 Посылки",
     "CREATE_ADDRESS": "➕ Добавить адрес",
+    "DELIVERED": "Delivered",
+    "BACK_TO_ORDERS": "<- Посылки",
+    "BACK_TO_MENU": "<<- Меню",
+    "SPOOF_IT": "Spoof It",
+    "SAVE_IT": "Save",
 }
 
 PRODUCT_FORM_TEXT = {
@@ -65,14 +73,16 @@ PRODUCT_FORM_TEXT = {
 
 ADDRESS_FORM_TEXT = {
     "ASK_FOR_NAME": "Name:",
-    "ASK_FOR_LINE_1": "Line 1:",
-    "ASK_FOR_LINE_2": "Line 2:",
+    "ASK_FOR_STREET": "Street:",
+    "ASK_FOR_HOUSE": "House:",
+    "ASK_FOR_APART": "Apartments:",
     "ASK_FOR_CITY": "City:",
     "ASK_FOR_STATE": "State:",
     "ASK_FOR_ZIP_CODE": "ZIP:",
     "ASK_FOR_PHONE": "Phone:",
     "ASK_FOR_COUNTRY": "Country:",
     "FINISH": "✅ Адрес сохранен!",
+    "SPOOF_OR_SAVE": "Spoof 10 new addresses or Save this one",
 }
 
 NOTIFY_TEXT_TO_ADMINS_ABOUT_USED_ADDRESS = (
@@ -91,3 +101,6 @@ NOTIFY_TEXT_TO_ADMINS_ABOUT_USED_ADDRESS = (
     "{product__name}, {product__shop_name}, {product__price},\n"
     "{product__delivery_date}, {product__address}, {product__product_url}\n```"
 )
+
+# change if you need to another text: string type
+ALL_INFO_IN_ORDER_PAGE = NOTIFY_TEXT_TO_ADMINS_ABOUT_USED_ADDRESS

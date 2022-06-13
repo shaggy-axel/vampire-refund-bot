@@ -65,3 +65,10 @@ def get_countries() -> InlineKeyboardMarkup:
         keyboard.insert(InlineKeyboardButton(
             country, callback_data=f"create_address:{country_code}"))
     return keyboard
+
+
+def spoof_or_save_button() -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup().add(
+        InlineKeyboardButton(BUTTONS_TEXT["SPOOF_IT"], callback_data="spoof_address:spoof"),
+        InlineKeyboardButton(BUTTONS_TEXT["SAVE_IT"], callback_data="spoof_address:save"),
+    )

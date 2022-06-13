@@ -1,3 +1,4 @@
+from typing import Optional
 from rest_framework import serializers
 
 from apps.addresses.models import Address
@@ -5,6 +6,7 @@ from apps.addresses.models import Address
 
 class AddressRetrieveUpdateSerializer(serializers.ModelSerializer):
     using_now = serializers.SerializerMethodField()
+    product_id = serializers.SerializerMethodField()
 
     class Meta:
         model = Address
@@ -13,13 +15,19 @@ class AddressRetrieveUpdateSerializer(serializers.ModelSerializer):
             'city', 'state', 'zip_code', 'phone',
             'status', 'used_by', 'used_at',
             'using_now', 'user_in_group',
-            'country'
+            'country', 'product_id'
         )
 
     def get_using_now(self, obj: Address) -> bool:
         if obj.used_by:
             return bool(obj.used_by.current_address)
         return False
+
+    def get_product_id(self, obj: Address) -> Optional[int]:
+        try:
+            return obj.product.id
+        except Address.product.RelatedObjectDoesNotExist:
+            return
 
 
 class AddressCreateSerializer(serializers.ModelSerializer):

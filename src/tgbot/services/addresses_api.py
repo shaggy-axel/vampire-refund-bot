@@ -21,6 +21,7 @@ class AddressTuple(NamedTuple):
     using_now: bool
     country: str
     user_in_group: str
+    product_id: Optional[int]
 
 
 def get_address_info(address_id: Union[int, str]) -> dict:
@@ -66,6 +67,7 @@ def serialize_addresses(data: Union[list[dict], dict]):
             using_now=data['using_now'],
             country=data['country'],
             user_in_group=data['user_in_group'],
+            product_id=data['product_id']
         )
     return [
         AddressTuple(
@@ -83,5 +85,6 @@ def serialize_addresses(data: Union[list[dict], dict]):
             using_now=address['using_now'],
             country=address['country'],
             user_in_group=address['user_in_group'],
+            product_id=address['product_id']
         ) for address in data
     ]
