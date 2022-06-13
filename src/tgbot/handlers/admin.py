@@ -77,3 +77,4 @@ def register_admin(dp: dispatcher.Dispatcher):
         delivered_address, lambda callback: callback.data.split('#')[0] == 'delivered',
         state="*",
     )
+

@@ -55,6 +55,8 @@ BUTTONS_TEXT = {
     "DELIVERED": "Delivered",
     "BACK_TO_ORDERS": "<- Посылки",
     "BACK_TO_MENU": "<<- Меню",
+    "SPOOF_IT": "Spoof It",
+    "SAVE_IT": "Save",
 }
 
 PRODUCT_FORM_TEXT = {
@@ -70,14 +72,16 @@ PRODUCT_FORM_TEXT = {
 
 ADDRESS_FORM_TEXT = {
     "ASK_FOR_NAME": "Напишите имя",
-    "ASK_FOR_LINE_1": "Line 1:",
-    "ASK_FOR_LINE_2": "Line 2:",
+    "ASK_FOR_STREET": "Street:",
+    "ASK_FOR_HOUSE": "House:",
+    "ASK_FOR_APART": "Apartments:",
     "ASK_FOR_CITY": "City:",
     "ASK_FOR_STATE": "State:",
     "ASK_FOR_ZIP_CODE": "Zip Code:",
     "ASK_FOR_PHONE": "PHONE:",
     "ASK_FOR_COUNTRY": "Country:",
     "FINISH": "Адрес сохранен",
+    "SPOOF_OR_SAVE": "Spoof 10 new addresses or Save this one",
 }
 
 NOTIFY_TEXT_TO_ADMINS_ABOUT_USED_ADDRESS = (

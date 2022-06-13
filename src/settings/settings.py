@@ -1,3 +1,4 @@
+import json
 import os
 from pathlib import Path
 
@@ -36,6 +37,12 @@ BASE_API = "http://web:8000/api/v1/"
 SECRET_KEY = os.environ.get("SECRET_KEY", "super30r2jsecretjfi02keyfj-")
 DEBUG = bool(os.environ.get("DEBUG"))
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "*").split(',')
+
+# SPOOFER
+SPOOFER_SETTINGS = {}
+spoofer_settings_file = os.path.join(BASE_DIR, "spoofer-settings.json")
+with open(spoofer_settings_file, 'r') as file:
+    SPOOFER_SETTINGS = json.load(file)
 
 # Application definition
 INSTALLED_APPS = [
