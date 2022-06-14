@@ -34,9 +34,9 @@ MESSAGE_TEXT = {
         "⚠️ Для получения нового адреса необходимо сначала изменить статус использования текущего!"
     ),
 
-    "CHOICES_STATUS_FOR_ADDRESS": "Адрес использован",
+    "CHOICES_STATUS_FOR_ADDRESS": "✅ Адрес использован",
     "ORDERS": "Посылки:",
-    "AFTER_DELIVERED": "Successfuly changed status to delivered",
+    "AFTER_DELIVERED": "✅ Статус успешно изменен!",
 }
 
 BUTTONS_TEXT = {
@@ -44,20 +44,20 @@ BUTTONS_TEXT = {
     "PROFILE": "👤 Профиль",
     "CONTACTS": "📘 FAQ",
 
-    "CHANGE_STATUS": "Адрес использован",
+    "CHANGE_STATUS": "✅ Адрес использован",
     "GET_INFO_OK": COUNTRY_DISPLAY,
-    "GET_INFO_NO_THANKS": "No Thanks",
-    "STATUS_USED": '✅ Заказ успешно создан!',
+    "GET_INFO_NO_THANKS": "No, thanks",
+    "STATUS_USED": '✅ Succesful order!',
     "STATUS_HOLD": '😡 Hold / Ban / Suspend',
 
 
     "ORDERS": "📦 Посылки",
     "CREATE_ADDRESS": "➕ Добавить адрес",
-    "DELIVERED": "Delivered",
+    "DELIVERED": "Доставлено",
     "BACK_TO_ORDERS": "<- Посылки",
     "BACK_TO_MENU": "<<- Меню",
-    "SPOOF_IT": "Spoof It",
-    "SAVE_IT": "Save",
+    "SPOOF_IT": "Спуфить",
+    "SAVE_IT": "Сохранить адрес",
 }
 
 PRODUCT_FORM_TEXT = {
@@ -82,24 +82,31 @@ ADDRESS_FORM_TEXT = {
     "ASK_FOR_PHONE": "Phone:",
     "ASK_FOR_COUNTRY": "Country:",
     "FINISH": "✅ Адрес сохранен!",
-    "SPOOF_OR_SAVE": "Spoof 10 new addresses or Save this one",
+    "SPOOF_OR_SAVE": "Заспуфить 10 новых адресов или сохранить один?",
 }
 
 NOTIFY_TEXT_TO_ADMINS_ABOUT_USED_ADDRESS = (
     # user
-    "```\n{user__telegram_id}, {user__username},\n"
-    "{user__using_now}, {user__current_address}\n"
+    "*ID пользователя:* {user__telegram_id}\n"
+    "*Имя пользователя:* {user__username}\n"
+    "*Текущий адрес пользователя:* {user__current_address}\n"
+    "*Статус в группе eBy PalPay:* {address__user_in_group}\n\n"
 
     # address
-    "{address__id}, {address__name}, {address__line_1}, {address__line_2},\n"
-    "{address__city}, {address__state}, {address__zip_code}, {address__phone},\n"
-    "{address__status}, {address__used_by}, {address__used_at},\n"
-    "{address__using_now}, {address__user_in_group},\n"
-    "{address__country}\n"
+    "*ID адреса:* {address__id}\n"
+    "*Имя дропа:* {address__name}\n"
+    "*Страна:* {address__country}\n"
+    "*Улица и номер дома:* {address__line_1}, {address__line_2}\n"
+    "*Штат, город, индекс:* {address__city}, {address__state}, {address__zip_code}\n"
+    "*Номер телефона:* {address__phone}\n"
+    "*Адрес был использован:* {address__used_at}\n\n"
 
     # product
-    "{product__name}, {product__shop_name}, {product__price},\n"
-    "{product__delivery_date}, {product__address}, {product__product_url}\n```"
+    "*Товар:* {product__name}\n"
+    "*Магазин:* {product__shop_name}\n"
+    "*Стоимость:* {product__price}\n"
+    "*Дата доставки:* {product__delivery_date}\n"
+    "*Ссылка:* {product__product_url}\n"
 )
 
 # change if you need to another text: string type
