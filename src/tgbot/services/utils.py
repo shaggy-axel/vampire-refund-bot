@@ -18,10 +18,10 @@ async def get_user_group_status(bot: Bot, user_id: int):
     return response["status"]
 
 
-def get_all_data_of_order(address_id: int, user: types.User) -> dict:
+def get_all_data_of_order(address_id: int) -> dict:
     """ ... """
-    user_data = telegram_user_api.get_user(user)
     address_data = addresses_api.get_address_info(address_id)
+    user_data = telegram_user_api.get_user(address_data['used_by'])
     product_data = products_api.get_product_by_query_param(
         {"name": "address", "value": address_id}
     )

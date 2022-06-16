@@ -1,3 +1,4 @@
+from typing import Union
 import requests as req
 from aiogram.types.user import User
 
@@ -16,13 +17,13 @@ def sign_up_user(user: User):
     req.post(f"{BASE_API}users/", data=data)
 
 
-def get_user(user: User) -> dict:
-    response = req.get(f'{BASE_API}users/{user.id}/')
+def get_user(user_id: Union[int, str]) -> dict:
+    response = req.get(f'{BASE_API}users/{user_id}/')
     return response.json()
 
 
 def is_admin(user: User) -> bool:
-    data = get_user(user)
+    data = get_user(user.id)
     return data['is_admin']
 
 

@@ -11,7 +11,7 @@ async def get_profile(message: types.Message, state: dispatcher.FSMContext):
     current_state = await state.get_state()
     if current_state is not None:
         await state.finish()
-    data = telegram_user_api.get_user(message.from_user)
+    data = telegram_user_api.get_user(message.from_user.id)
     user = telegram_user_api.serialize_user(data)
 
     if user.current_address:
@@ -55,7 +55,7 @@ async def change_status_send(callback: types.CallbackQuery, state: dispatcher.FS
         return
 
     # change status
-    user_data = telegram_user_api.get_user(callback.from_user)
+    user_data = telegram_user_api.get_user(callback.from_user.id)
     user = telegram_user_api.serialize_user(user_data)
     user_in_group = await get_user_group_status(callback.bot, user.telegram_id)
     address_data = addresses_api.change_status(
