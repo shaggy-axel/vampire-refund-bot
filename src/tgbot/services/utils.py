@@ -46,7 +46,7 @@ async def send_message_to_all_of_admin_users(
     for user in telegram_user_api.get_all_admin_users():
         await callback.bot.send_message(
             user.telegram_id,
-            NOTIFY_TEXT_TO_ADMINS_ABOUT_USED_ADDRESS.format(**all_data).replace('_', '\_'),
+            NOTIFY_TEXT_TO_ADMINS_ABOUT_USED_ADDRESS.format(**all_data),
             parse_mode="Markdown"
         )
 

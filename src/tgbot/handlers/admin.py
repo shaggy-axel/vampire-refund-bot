@@ -48,7 +48,7 @@ async def order_page(callback: types.CallbackQuery):
 
     await callback.bot.send_message(
         callback.from_user.id,
-        ALL_INFO_IN_ORDER_PAGE.format(**all_data).replace('_', '\_'),
+        ALL_INFO_IN_ORDER_PAGE.format(**all_data),
         parse_mode="Markdown",
         reply_markup=keyboard)
     await callback.bot.delete_message(
