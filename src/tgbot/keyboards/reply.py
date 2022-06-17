@@ -12,12 +12,11 @@ def menu_keyboard(is_admin: bool = False) -> ReplyKeyboardMarkup:
             KeyboardButton(BUTTONS_TEXT['ORDERS']),
             KeyboardButton(BUTTONS_TEXT['CREATE_ADDRESS']),
         )
-    else:
-        keyboard.add(KeyboardButton(BUTTONS_TEXT["CONTACTS"]))
-
     keyboard.add(
         KeyboardButton(BUTTONS_TEXT['GET_INFO']),
         KeyboardButton(BUTTONS_TEXT['PROFILE']),
     )
+    if not is_admin:
+        keyboard.add(KeyboardButton(BUTTONS_TEXT["CONTACTS"]))
 
     return keyboard
