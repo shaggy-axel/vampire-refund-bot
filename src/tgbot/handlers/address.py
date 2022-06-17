@@ -10,7 +10,7 @@ async def get_info(message: types.Message, state: dispatcher.FSMContext):
     current_state = await state.get_state()
     if current_state is not None:
         await state.finish()
-    data = telegram_user_api.get_user(message.from_user)
+    data = telegram_user_api.get_user(message.from_user.id)
     user = telegram_user_api.serialize_user(data)
     text = MESSAGE_TEXT["GET_INFO_IF_HAVE_NO_ADDRESS"].format(
         first_name=message.from_user.first_name)

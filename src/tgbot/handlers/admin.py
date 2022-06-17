@@ -44,11 +44,11 @@ async def order_page(callback: types.CallbackQuery):
     _, address_id, current_page = callback.data.split('#')
     keyboard = get_back_to_orders_keyboard(address_id, current_page)
 
-    all_data = get_all_data_of_order(int(address_id), callback.from_user)
+    all_data = get_all_data_of_order(int(address_id))
 
     await callback.bot.send_message(
         callback.from_user.id,
-        ALL_INFO_IN_ORDER_PAGE.format(**all_data).replace('_', '\_'),
+        ALL_INFO_IN_ORDER_PAGE.format(**all_data),
         parse_mode="Markdown",
         reply_markup=keyboard)
     await callback.bot.delete_message(

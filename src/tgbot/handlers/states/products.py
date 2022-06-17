@@ -149,7 +149,7 @@ async def save_delivery_time_and_finish(
             delivery_date = f"{delivery_date:%Y-%m-%d %H:%M}"
         else:
             delivery_date = None
-        user_data = telegram_user_api.get_user(data['user'])
+        user_data = telegram_user_api.get_user(data['user'].id)
         user = telegram_user_api.serialize_user(user_data)
         user_in_group = await get_user_group_status(callback.bot, user.telegram_id)
         address_data = addresses_api.change_status(
