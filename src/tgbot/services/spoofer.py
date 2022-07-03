@@ -11,6 +11,7 @@ def generate(text: str) -> str:
 
 
 def generate_spoofing_addresses(original_address: dict):
+    title_fields = ["name"]
     generate_fields = ["name", "street"]
     must_be_splited = ["name"]
     prefix_fields = ["house", "apartments", "street"]
@@ -28,9 +29,14 @@ def generate_spoofing_addresses(original_address: dict):
 
     new_result = []
     for address in result:
+        # add prefixes for certain fields
         for field in prefix_fields:
             address[field] = (
                 f"{random.choice(SPOOFER_SETTINGS[field])} "
                 f"{address[field]}").strip()
+        # format title for certain fields
+        for field in title_fields:
+            address[field] = address[field].title()
+
         new_result.append(address)
     return result
