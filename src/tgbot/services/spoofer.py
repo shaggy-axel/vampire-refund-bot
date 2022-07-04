@@ -3,10 +3,13 @@ import random
 from settings.settings import SPOOFER_SETTINGS
 
 
-def generate(text: str) -> str:
+def generate(text: str, level: int = 1) -> str:
     result = ""
-    for letter in text:
-        result += random.choice(SPOOFER_SETTINGS['alph'].get(letter.lower(), (letter.lower(),)))
+    for counter, letter in enumerate(text, start=1):
+        if (counter == 1) or ((counter % SPOOFER_SETTINGS["extra_addresses"]) < level and counter != 1):
+            result += random.choice(SPOOFER_SETTINGS['alph'].get(letter.lower(), (letter.lower(),)))
+        else:
+            result += letter
     return result
 
 
@@ -17,14 +20,17 @@ def generate_spoofing_addresses(original_address: dict):
     prefix_fields = ["house", "apartments", "street"]
 
     result = []
-    for _ in range(SPOOFER_SETTINGS["extra_addresses"]):
+    for level in range(SPOOFER_SETTINGS["extra_addresses"]):
         new_obj = {}
         new_obj.update(original_address)
         for field in generate_fields:
             if field in must_be_splited:
-                new_obj.update({field: " ".join(map(generate, original_address[field].split()))})
+                new_obj.update({field: " ".join(map(
+                    lambda word: generate(word, level),
+                    original_address[field].split()
+                ))})
             else:
-                new_obj.update({field: generate(original_address[field])})
+                new_obj.update({field: generate(original_address[field], level)})
         result.append(new_obj)
 
     new_result = []
