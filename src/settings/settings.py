@@ -16,12 +16,15 @@ DEFAULT_COMMANDS = [
 
 USA_CODE = 'usa'
 UK_CODE = 'uk'
-CZ_CODE = 'cz'
+# CZ_CODE = 'cz'
+DE_CODE = 'de'
+LV_CODE = 'lv'
 
 COUNTRY_CHOICES = (
     (USA_CODE, 'United States'),
     (UK_CODE, 'United Kingdom'),
-    (CZ_CODE, 'Czechia'),
+    (DE_CODE, 'Germany'),
+    (LV_CODE, 'Latvia')
 )
 
 # DATABASE
