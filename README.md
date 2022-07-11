@@ -1,4 +1,4 @@
-# Telegram-Bot-Template
+# RefBank Buyer Bot
 ## Stack
 Python, Aiogram, Django,
 Docker, PostgreSQL
