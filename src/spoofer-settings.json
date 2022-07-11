@@ -63,11 +63,9 @@
         " ": [" "]
     },
     "street": [
-        "ul",
         "street",
-        "yl",
         "st",
-        "ulitca"
+        "sttreet"
     ],
     "avenue": [
         "avenu",
@@ -75,17 +73,12 @@
         "awenue"
     ],
     "house": [
-        "dom",
         "house",
-        "d",
         "bld",
         "building",
         ""
     ],
     "apartments": [
-        "kv",
-        "k",
-        "kvartira",
         "apartment",
         "flat",
         "room",
