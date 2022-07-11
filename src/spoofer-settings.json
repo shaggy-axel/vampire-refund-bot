@@ -65,12 +65,16 @@
     "street": [
         "street",
         "st",
-        "sttreet"
+        "sttreet",
+        "sstreet",
+        "streett",
+        ""
     ],
     "avenue": [
         "avenu",
         "aveneu",
-        "awenue"
+        "awenue",
+        ""
     ],
     "house": [
         "house",
@@ -80,9 +84,12 @@
     ],
     "apartments": [
         "apartment",
+        "suite",
+        "unit",
         "flat",
         "room",
         "houseroom",
-        "apt"
+        "apt",
+        ""
     ]
 }
