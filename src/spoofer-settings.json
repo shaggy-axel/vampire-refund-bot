@@ -1,5 +1,5 @@
 {
-    "extra_addresses": 10,
+    "extra_addresses": 100,
     "alph": {
         "а": ["a"],
         "б": ["b"],
