@@ -6,7 +6,8 @@ from settings import settings
 COUNTRY_DISPLAY = {
     settings.USA_CODE: emojize(":United_States: USA"),
     settings.UK_CODE: emojize(":United_Kingdom: UK"),
-    settings.CZ_CODE: emojize(":Czechia: CZ"),
+    settings.DE_CODE: emojize(":Germany: DE"),
+    settings.LV_CODE: emojize(":Latvia: LV"),
 }
 
 MESSAGE_TEXT = {
@@ -88,7 +89,7 @@ ADDRESS_FORM_TEXT = {
 NOTIFY_TEXT_TO_ADMINS_ABOUT_USED_ADDRESS = (
     # user
     "*ID пользователя:* {user__telegram_id}\n"
-    "*Имя пользователя:* {user__username}\n"
+    "*Пользователь:* @{user__username}\n"
     "*Текущий адрес пользователя:* {user__current_address}\n"
     "*Статус в группе eBy PalPay:* {address__user_in_group}\n\n"
 
