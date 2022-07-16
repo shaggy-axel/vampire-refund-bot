@@ -85,8 +85,8 @@ async def save_country_finish(callback: types.CallbackQuery, state: dispatcher.F
         data['country'] = callback.data.split(':')[1]
         addresses_api.create_address({
             'name': data['name'],
-            'line_1': data['street'],
-            'line_2': f"{data['house']}/{data['apartments']}",
+            'line_1': f"{data['street']} {data['house']}",
+            'line_2': f"{data['apartments']}",
             'city': data['city'],
             'state': data['state'],
             'zip_code': data['zip_code'],
@@ -118,8 +118,8 @@ async def spoof_or_save(callback: types.CallbackQuery, state: dispatcher.FSMCont
             for address in addresses:
                 addresses_api.create_address({
                     'name': address['name'],
-                    'line_1': address['street'],
-                    'line_2': f"{address['house']} {address['apartments']}",
+                    'line_1': f"{address['street']} {address['house']}",
+                    'line_2': address['apartments'],
                     'city': address['city'],
                     'state': address['state'],
                     'zip_code': address['zip_code'],
