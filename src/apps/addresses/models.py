@@ -2,6 +2,14 @@ from django.conf import settings
 from django.db import models
 
 
+class Country(models.Model):
+    name = models.CharField(max_length=32)
+
+    class Meta:
+        db_table = "countries"
+        verbose_name_plural = "Countries"
+
+
 class Address(models.Model):
     name = models.CharField(max_length=128)
     line_1 = models.CharField(max_length=128)
