@@ -1,10 +1,11 @@
 from rest_framework import viewsets, views, response, status
 from rest_framework.request import Request
 
-from apps.addresses.models import Address
+from apps.addresses.models import Address, Country
 from apps.addresses.api.serializers import (
     AddressRetrieveUpdateSerializer,
-    AddressCreateSerializer
+    AddressCreateSerializer,
+    CountrySerializer
 )
 
 
@@ -18,7 +19,7 @@ class AddressAPIViewSet(viewsets.ModelViewSet):
 
 
 class GetAddressAPI(views.APIView):
-    def get(self, request: Request):
+    def get(self, request: Request) -> response.Response:
         country = request.query_params['country']
         obj = Address.objects.filter(status='notused', country=country)
         if obj:
@@ -32,7 +33,15 @@ class GetAddressAPI(views.APIView):
 
 
 class GetUsedAddressesAPI(views.APIView):
-    def get(self, request):
+    def get(self, request: Request) -> response.Response:
         obj = Address.objects.filter(status="used").exclude(product=None)
         return response.Response(
             AddressRetrieveUpdateSerializer(obj, many=True).data, status.HTTP_200_OK)
+
+
+class GetCountriesAPIView(views.APIView):
+    def get(self, request: Request) -> response.Response:
+        queryset = Country.objects.all()
+        return response.Response(
+            CountrySerializer(queryset, many=True).data, status=status.HTTP_200_OK
+        )

@@ -1,7 +1,7 @@
 from typing import Optional
 from rest_framework import serializers
 
-from apps.addresses.models import Address
+from apps.addresses.models import Address, Country
 
 
 class AddressRetrieveUpdateSerializer(serializers.ModelSerializer):
@@ -37,3 +37,9 @@ class AddressCreateSerializer(serializers.ModelSerializer):
             'name', 'line_1', 'line_2',
             'city', 'state', 'zip_code', 'phone', 'country'
         )
+
+
+class CountrySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Country
+        fields = '__all__'
