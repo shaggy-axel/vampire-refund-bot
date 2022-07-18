@@ -8,7 +8,8 @@ class ProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = (
             "name", "shop_name", "price",
-            "delivery_date", "address", "product_url"
+            "delivery_date", "address", "product_url",
+            "track_number"
         )
 
     def create(self, validated_data):

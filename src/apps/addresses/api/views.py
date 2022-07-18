@@ -21,7 +21,7 @@ class AddressAPIViewSet(viewsets.ModelViewSet):
 class GetAddressAPI(views.APIView):
     def get(self, request: Request) -> response.Response:
         country = request.query_params['country']
-        obj = Address.objects.filter(status='notused', country=country)
+        obj = Address.objects.filter(status='notused', country=Country.objects.get(pk=country))
         if obj:
             obj = obj.first()
             data = AddressRetrieveUpdateSerializer(obj).data
