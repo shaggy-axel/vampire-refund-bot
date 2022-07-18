@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import include, path
 from rest_framework.routers import SimpleRouter
 
-from apps.addresses.api.views import AddressAPIViewSet
+from apps.addresses.api.views import AddressAPIViewSet, GetCountriesAPIView
 from apps.users.api.views import TelegramUserAPIViewSet
 
 
@@ -16,4 +16,5 @@ urlpatterns = [
     path('api/v1/', include(router.urls)),
     path('api/v1/addresses/', include('apps.addresses.api.urls')),
     path('api/v1/products/', include('apps.products.api.urls')),
+    path('api/v1/countries/', GetCountriesAPIView.as_view())
 ]

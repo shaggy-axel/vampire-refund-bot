@@ -37,9 +37,7 @@ class Address(models.Model):
     )
     used_at = models.DateTimeField(null=True, blank=True)
     user_in_group = models.CharField(max_length=100, null=True, blank=True)
-    country = models.CharField(
-        max_length=30, choices=settings.COUNTRY_CHOICES,
-        default=settings.COUNTRY_CHOICES[0][0])
+    country = models.ForeignKey(Country, on_delete=models.CASCADE, related_name="addresses")
 
     class Meta:
         db_table = 'addresses'

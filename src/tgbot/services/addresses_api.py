@@ -19,7 +19,7 @@ class AddressTuple(NamedTuple):
     used_by: Optional[int]
     used_at: Optional[Union[str, datetime]]
     using_now: bool
-    country: str
+    country: int
     user_in_group: str
     product_id: Optional[int]
 
@@ -34,7 +34,7 @@ def get_used_addresses() -> dict:
     return response.json()
 
 
-def get_new_address(country: str):
+def get_new_address(country: int):
     response = req.get(f"{BASE_API}addresses/first/?country={country}")
     return response.json()
 
