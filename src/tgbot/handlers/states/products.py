@@ -187,8 +187,9 @@ async def save_delivery_time_and_finish(
 
         product_data = {
             "name": data["product_name"], "shop_name": data["shop_name"],
-            "price": data["price"], "delivery_date": delivery_date, "track_number": data["track_number"],
-            "address": user.current_address, "product_url": data["product_url"]}
+            "price": data["price"], "delivery_date": delivery_date,
+            "track_number": data["track_number"], "address": user.current_address,
+            "product_url": data["product_url"]}
         products_api.bind_product(data=product_data)
 
     await state.finish()
