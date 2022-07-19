@@ -1,14 +1,6 @@
 from emoji import emojize
 
-from settings import settings
-
-
-COUNTRY_DISPLAY = {
-    settings.USA_CODE: emojize(":United_States: USA"),
-    settings.UK_CODE: emojize(":United_Kingdom: UK"),
-    settings.DE_CODE: emojize(":Germany: DE"),
-    settings.LV_CODE: emojize(":Latvia: LV"),
-}
+from tgbot.services import countries_api
 
 MESSAGE_TEXT = {
     "START_COMMAND": "Пожалуйста, выберите действие.",
@@ -46,7 +38,7 @@ BUTTONS_TEXT = {
     "CONTACTS": "📘 FAQ",
 
     "CHANGE_STATUS": "✅ Адрес использован",
-    "GET_INFO_OK": COUNTRY_DISPLAY,
+    "GET_INFO_OK": countries_api.get,
     "GET_INFO_NO_THANKS": "No, thanks",
     "STATUS_USED": '✅ Succesful order!',
     "STATUS_HOLD": '😡 Hold / Ban / Suspend',
@@ -67,6 +59,7 @@ PRODUCT_FORM_TEXT = {
     "ASK_FOR_PRICE": "💸 Укажите минимальную стоимость товара без налога (например, 850$):",
     "ASK_FOR_PRODUCT_URL": "🔗 Отправьте ссылку на товар:",
     "ASK_FOR_PRODUCT_URL_AGAIN": "❌ Некорректная ссылка, отправьте ссылку на товар повторно!",
+    "ASK_FOR_TRACK_NUMBER": "Трек номер:",
     "ASK_FOR_DATE": "📅 Выберите дату доставки:",
     "ASK_FOR_TIME": "⏲️ Выберите время доставки:",
     "FINISH": "💘 Спасибо за заказ! :3",

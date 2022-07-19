@@ -9,6 +9,7 @@ class Product(models.Model):
     address = models.OneToOneField(
         'addresses.Address', on_delete=models.SET_NULL, null=True, blank=True)
     product_url = models.URLField(max_length=1024, null=True, blank=True)
+    track_number = models.CharField(max_length=255, null=True, blank=True)
 
     class Meta:
         db_table = 'products'

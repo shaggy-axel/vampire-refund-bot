@@ -14,19 +14,6 @@ DEFAULT_COMMANDS = [
     ("menu", "Output menu"),
 ]
 
-USA_CODE = 'usa'
-UK_CODE = 'uk'
-# CZ_CODE = 'cz'
-DE_CODE = 'de'
-LV_CODE = 'lv'
-
-COUNTRY_CHOICES = (
-    (USA_CODE, 'United States'),
-    (UK_CODE, 'United Kingdom'),
-    (DE_CODE, 'Germany'),
-    (LV_CODE, 'Latvia')
-)
-
 # DATABASE
 POSTGRES_DB = os.environ.get('POSTGRES_DB')
 POSTGRES_USER = os.environ.get('POSTGRES_USER')

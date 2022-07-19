@@ -66,7 +66,7 @@ async def save_price_go_to_product_url(
     await message.delete()
 
 
-async def save_product_url_go_to_delivery_date(
+async def save_product_url_go_track_number(
     message: types.Message, state: dispatcher.FSMContext
 ):
     async with state.proxy() as data:
@@ -74,11 +74,11 @@ async def save_product_url_go_to_delivery_date(
 
     if is_valid_product_url(data["product_url"]):
         await ProductForm.next()
-        keyboard = await SimpleCalendar().start_calendar()
+        keyboard = types.InlineKeyboardMarkup()
         await message.answer(
-            PRODUCT_FORM_TEXT["ASK_FOR_DATE"],
+            PRODUCT_FORM_TEXT["ASK_FOR_TRACK_NUMBER"],
             reply_markup=keyboard.add(
-                pass_button("Пропустить", "pass_date"),
+                pass_button("Пропустить", "pass_track"),
                 cancel_button("Отменить")
             ),
             parse_mode="Markdown")
@@ -88,6 +88,35 @@ async def save_product_url_go_to_delivery_date(
         await message.answer(
             PRODUCT_FORM_TEXT["ASK_FOR_PRODUCT_URL_AGAIN"], parse_mode="Markdown")
         await message.delete()
+
+
+async def save_track_number_go_to_delivery_date(
+        message: types.Message, state: dispatcher.FSMContext, pass_state: bool = False
+):
+    track_number = None
+    if not pass_state:
+        track_number = message.text
+
+    async with state.proxy() as data:
+        data['track_number'] = track_number
+
+    await ProductForm.next()
+    keyboard = await SimpleCalendar().start_calendar()
+
+    await message.answer(
+        PRODUCT_FORM_TEXT["ASK_FOR_DATE"],
+        reply_markup=keyboard.add(
+            pass_button("Пропустить", "pass_date"),
+            cancel_button("Отменить")
+        ),
+        parse_mode="Markdown")
+    await message.delete()
+
+
+async def pass_track_number_go_to_delivery_date(
+        callback: types.CallbackQuery, state: dispatcher.FSMContext
+):
+    await save_track_number_go_to_delivery_date(callback.message, state, pass_state=True)
 
 
 async def pass_date_callback(
@@ -159,7 +188,8 @@ async def save_delivery_time_and_finish(
         product_data = {
             "name": data["product_name"], "shop_name": data["shop_name"],
             "price": data["price"], "delivery_date": delivery_date,
-            "address": user.current_address, "product_url": data["product_url"]}
+            "track_number": data["track_number"], "address": user.current_address,
+            "product_url": data["product_url"]}
         products_api.bind_product(data=product_data)
 
     await state.finish()
@@ -192,9 +222,17 @@ def register_product_states(dp: dispatcher.Dispatcher):
         lambda _: True,
         state=ProductForm.price)
     dp.register_message_handler(
-        save_product_url_go_to_delivery_date,
+        save_product_url_go_track_number,
         lambda _: True,
         state=ProductForm.product_url)
+    dp.register_message_handler(
+        save_track_number_go_to_delivery_date,
+        lambda _: True, state=ProductForm.track_number)
+    dp.register_callback_query_handler(
+        pass_track_number_go_to_delivery_date,
+        lambda callback: callback.data == "pass_track",
+        state=ProductForm.track_number)
+
     dp.register_callback_query_handler(
         save_delivery_date_go_to_delivery_time,
         lambda callback: callback.data != "pass_date",

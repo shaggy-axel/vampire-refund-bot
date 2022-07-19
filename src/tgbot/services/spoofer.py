@@ -6,8 +6,14 @@ from settings.settings import SPOOFER_SETTINGS
 def generate(text: str, level: int = 1) -> str:
     result = ""
     for counter, letter in enumerate(text, start=1):
-        if (counter == 1) or ((counter % SPOOFER_SETTINGS["extra_addresses"]) < level and counter != 1):
-            result += random.choice(SPOOFER_SETTINGS['alph'].get(letter.lower(), (letter.lower(),)))
+        if (
+            (counter == 1) or
+            ((counter % SPOOFER_SETTINGS["extra_addresses"]) < level and
+             counter != 1)
+        ):
+            result += random.choice(SPOOFER_SETTINGS['alph'].get(
+                letter.lower(), (letter.lower(),))
+            )
         else:
             result += letter
     return result
