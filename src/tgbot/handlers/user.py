@@ -1,7 +1,8 @@
 from aiogram import dispatcher, types
 
 from tgbot.misc.states import ProductForm
-from tgbot.keyboards.inline import cancel_button, cancel_keyboard, get_status_keyboard, pass_button, profile_keyboard
+from tgbot.keyboards.inline import (
+    cancel_button, get_status_keyboard, pass_button, profile_keyboard)
 from tgbot.services import addresses_api, telegram_user_api
 from settings.text import BUTTONS_TEXT, MESSAGE_TEXT, PRODUCT_FORM_TEXT
 from tgbot.services.utils import get_user_group_status
