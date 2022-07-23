@@ -1,3 +1,4 @@
+from datetime import datetime
 import re
 from typing import Iterable
 
@@ -29,7 +30,20 @@ def get_all_data_of_order(address_id: int) -> dict:
     user_data = {f"user__{key}": value for key, value in user_data.items()}
     address_data = {f"address__{key}": value for key, value in address_data.items()}
     product_data = {f"product__{key}": value for key, value in product_data.items()}
-    return {**user_data, **address_data, **product_data}
+    all_data = {**user_data, **address_data, **product_data}
+
+    if "address__used_at" in all_data:
+        all_data["address__used_at"] = datetime.strptime(
+            all_data['address__used_at'].split('.')[0].split('+')[0],
+            "%Y-%m-%dT%H:%M:%S"
+        ).strftime("%d %B %Y %T") + " UTC"
+    if "product__delivery_date" in all_data:
+        all_data["product__delivery_date"] = datetime.strptime(
+            all_data['product__delivery_date'].split('.')[0].split('+')[0],
+            "%Y-%m-%dT%H:%M:%S"
+        ).strftime("%d %B %Y %T") + " UTC"
+
+    return all_data
 
 
 async def send_message_to_all_of_admin_users(

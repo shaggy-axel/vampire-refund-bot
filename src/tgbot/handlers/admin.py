@@ -27,7 +27,8 @@ async def orders(message: types.Message, state: dispatcher.FSMContext):
     keyboard = get_orders_keyboard()
 
     await message.bot.send_message(
-        message.from_user.id, text=MESSAGE_TEXT["ORDERS"], reply_markup=keyboard)
+        message.from_user.id, text=MESSAGE_TEXT["ORDERS"],
+        reply_markup=keyboard, parse_mode="Markdown")
 
 
 async def orders_callback_change_page(callback: types.CallbackQuery):
@@ -35,7 +36,8 @@ async def orders_callback_change_page(callback: types.CallbackQuery):
     keyboard = get_orders_keyboard(current_page)
 
     await callback.bot.send_message(
-        callback.from_user.id, text=MESSAGE_TEXT["ORDERS"], reply_markup=keyboard)
+        callback.from_user.id, text=MESSAGE_TEXT["ORDERS"],
+        reply_markup=keyboard, parse_mode="Markdown")
     await callback.bot.delete_message(
         callback.from_user.id, callback.message.message_id)
 
@@ -48,9 +50,8 @@ async def order_page(callback: types.CallbackQuery):
 
     await callback.bot.send_message(
         callback.from_user.id,
-        ALL_INFO_IN_ORDER_PAGE.format(**all_data),
-        # parse_mode="Markdown",
-        reply_markup=keyboard)
+        ALL_INFO_IN_ORDER_PAGE.format(**all_data).replace('_', '\_'),
+        parse_mode="Markdown", reply_markup=keyboard, disable_web_page_preview=True)
     await callback.bot.delete_message(
         callback.from_user.id, callback.message.message_id)
 

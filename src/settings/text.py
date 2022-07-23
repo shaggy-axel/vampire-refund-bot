@@ -101,7 +101,7 @@ NOTIFY_TEXT_TO_ADMINS_ABOUT_USED_ADDRESS = (
     "*Магазин:* {product__shop_name}\n"
     "*Стоимость:* {product__price}\n"
     "*Дата доставки:* {product__delivery_date}\n"
-    "*Ссылка:* {product__product_url}\n"
+    "*Ссылка:* {product__product_url}"
 )
 
 # change if you need to another text: string type
