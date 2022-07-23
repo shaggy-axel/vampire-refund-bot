@@ -1,7 +1,7 @@
 from aiogram import dispatcher, types
 
 from tgbot.misc.states import ProductForm
-from tgbot.keyboards.inline import cancel_keyboard, get_status_keyboard, profile_keyboard
+from tgbot.keyboards.inline import cancel_button, cancel_keyboard, get_status_keyboard, pass_button, profile_keyboard
 from tgbot.services import addresses_api, telegram_user_api
 from settings.text import BUTTONS_TEXT, MESSAGE_TEXT, PRODUCT_FORM_TEXT
 from tgbot.services.utils import get_user_group_status
@@ -47,10 +47,15 @@ async def change_status_send(callback: types.CallbackQuery, state: dispatcher.FS
             data['status'] = status
             data['user'] = callback.from_user
 
-        await ProductForm.product_name.set()
+        await ProductForm.first()
+        keyboard = types.InlineKeyboardMarkup()
         await callback.bot.send_message(
-            callback.from_user.id, PRODUCT_FORM_TEXT['ASK_FOR_PRODUCT_NAME'],
-            reply_markup=cancel_keyboard("Отмена"), parse_mode="Markdown")
+            callback.from_user.id, PRODUCT_FORM_TEXT['ASK_FOR_TRACK_NUMBER'],
+            reply_markup=keyboard.add(
+                pass_button(BUTTONS_TEXT["HAVE_NO_TRACK_NUMBER"], "pass_track"),
+                cancel_button("Отменить")
+            ),
+            parse_mode="Markdown")
         await callback.bot.delete_message(callback.from_user.id, callback.message.message_id)
         return
 

@@ -37,12 +37,12 @@ BUTTONS_TEXT = {
     "PROFILE": "👤 Профиль",
     "CONTACTS": "📘 FAQ",
 
+    "HAVE_NO_TRACK_NUMBER": "Address - Hold / Bun / Suspend",
     "CHANGE_STATUS": "✅ Адрес использован",
     "GET_INFO_OK": countries_api.get,
     "GET_INFO_NO_THANKS": "No, thanks",
     "STATUS_USED": '✅ Succesful order!',
     "STATUS_HOLD": '😡 Hold / Ban / Suspend',
-
 
     "ORDERS": "📦 Посылки",
     "CREATE_ADDRESS": "➕ Добавить адрес",
@@ -54,15 +54,16 @@ BUTTONS_TEXT = {
 }
 
 PRODUCT_FORM_TEXT = {
+    "ASK_FOR_TRACK_NUMBER": "Трек номер:",
     "ASK_FOR_PRODUCT_NAME": "📦 Укажите наименование товара (например, MSI GeForce RTX 3080):",
     "ASK_FOR_SHOP_NAME": "🏬 Укажите название магазина (например, Amazon):",
     "ASK_FOR_PRICE": "💸 Укажите минимальную стоимость товара без налога (например, 850$):",
     "ASK_FOR_PRODUCT_URL": "🔗 Отправьте ссылку на товар:",
     "ASK_FOR_PRODUCT_URL_AGAIN": "❌ Некорректная ссылка, отправьте ссылку на товар повторно!",
-    "ASK_FOR_TRACK_NUMBER": "Трек номер:",
     "ASK_FOR_DATE": "📅 Выберите дату доставки:",
     "ASK_FOR_TIME": "⏲️ Выберите время доставки:",
     "FINISH": "💘 Спасибо за заказ! :3",
+    "STATUS_TO_HOLD": "Status of address have been changed to `hold`"
 }
 
 ADDRESS_FORM_TEXT = {

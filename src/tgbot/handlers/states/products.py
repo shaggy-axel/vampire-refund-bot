@@ -27,11 +27,31 @@ async def cancel_handler(
     await state.finish()
 
 
-async def save_product_name_go_to_shop_name(
+async def save_track_number(
+        message: types.Message, state: dispatcher.FSMContext, pass_state: bool = False
+):
+    if pass_state:
+        user_data = telegram_user_api.get_user(message.from_user.id)
+        user = telegram_user_api.serialize_user(user_data)
+        user_in_group = await get_user_group_status(message.bot, user.telegram_id)
+        addresses_api.change_status(
+            address_id=user.current_address, status="hold",
+            user_in_group=user_in_group)
+        await message.answer(PRODUCT_FORM_TEXT["STATUS_TO_HOLD"], parse_mode="Markdown")
+        return
+    await state.update_data(track_number=message.text)
+
+    await ProductForm.next()
+    await message.answer(
+        PRODUCT_FORM_TEXT["ASK_FOR_PRODUCT_NAME"],
+        reply_markup=cancel_keyboard("Отмена"), parse_mode="Markdown")
+    await message.delete()
+
+
+async def save_product_name(
     message: types.Message, state: dispatcher.FSMContext
 ):
-    async with state.proxy() as data:
-        data['product_name'] = message.text
+    await state.update_data(product_name=message.text)
 
     await ProductForm.next()
     await message.answer(
@@ -40,11 +60,10 @@ async def save_product_name_go_to_shop_name(
     await message.delete()
 
 
-async def save_shop_name_go_to_price(
+async def save_shop_name(
     message: types.Message, state: dispatcher.FSMContext
 ):
-    async with state.proxy() as data:
-        data['shop_name'] = message.text
+    await state.update_data(shop_name=message.text)
 
     await ProductForm.next()
     await message.answer(
@@ -53,11 +72,10 @@ async def save_shop_name_go_to_price(
     await message.delete()
 
 
-async def save_price_go_to_product_url(
+async def save_price(
     message: types.Message, state: dispatcher.FSMContext
 ):
-    async with state.proxy() as data:
-        data['price'] = message.text
+    await state.update_data(price=message.text)
 
     await ProductForm.next()
     await message.answer(
@@ -66,74 +84,51 @@ async def save_price_go_to_product_url(
     await message.delete()
 
 
-async def save_product_url_go_track_number(
+async def save_product_url(
     message: types.Message, state: dispatcher.FSMContext
 ):
-    async with state.proxy() as data:
-        data['product_url'] = message.text
+    await state.update_data(product_url=message.text)
 
-    if is_valid_product_url(data["product_url"]):
+    if is_valid_product_url(message.text):
         await ProductForm.next()
-        keyboard = types.InlineKeyboardMarkup()
+        keyboard = await SimpleCalendar().start_calendar()
         await message.answer(
-            PRODUCT_FORM_TEXT["ASK_FOR_TRACK_NUMBER"],
+            PRODUCT_FORM_TEXT["ASK_FOR_DATE"],
             reply_markup=keyboard.add(
-                pass_button("Пропустить", "pass_track"),
+                pass_button("Пропустить", "pass_date"),
                 cancel_button("Отменить")
             ),
             parse_mode="Markdown")
         await message.delete()
     else:
-        ProductForm.product_url.set()
+        await ProductForm.product_url.set()
         await message.answer(
             PRODUCT_FORM_TEXT["ASK_FOR_PRODUCT_URL_AGAIN"], parse_mode="Markdown")
         await message.delete()
 
 
-async def save_track_number_go_to_delivery_date(
-        message: types.Message, state: dispatcher.FSMContext, pass_state: bool = False
-):
-    track_number = None
-    if not pass_state:
-        track_number = message.text
-
-    async with state.proxy() as data:
-        data['track_number'] = track_number
-
-    await ProductForm.next()
-    keyboard = await SimpleCalendar().start_calendar()
-
-    await message.answer(
-        PRODUCT_FORM_TEXT["ASK_FOR_DATE"],
-        reply_markup=keyboard.add(
-            pass_button("Пропустить", "pass_date"),
-            cancel_button("Отменить")
-        ),
-        parse_mode="Markdown")
-    await message.delete()
-
-
-async def pass_track_number_go_to_delivery_date(
+async def pass_track_number(
         callback: types.CallbackQuery, state: dispatcher.FSMContext
 ):
-    await save_track_number_go_to_delivery_date(callback.message, state, pass_state=True)
+    callback.message.from_user = callback.from_user
+    await save_track_number(callback.message, state, pass_state=True)
 
 
 async def pass_date_callback(
     callback: types.CallbackQuery, state: dispatcher.FSMContext,
 ):
-    await save_delivery_date_go_to_delivery_time(
+    await save_delivery_date(
         callback=callback, state=state, pass_state=True)
 
 
 async def pass_time_callback(
     callback: types.CallbackQuery, state: dispatcher.FSMContext,
 ):
-    await save_delivery_time_and_finish(
+    await save_delivery_time(
         callback=callback, state=state, pass_state=True)
 
 
-async def save_delivery_date_go_to_delivery_time(
+async def save_delivery_date(
     callback: types.CallbackQuery, state: dispatcher.FSMContext, pass_state: bool = False,
 ):
     if not pass_state:
@@ -161,7 +156,7 @@ async def save_delivery_date_go_to_delivery_time(
         await pass_time_callback(callback, state)
 
 
-async def save_delivery_time_and_finish(
+async def save_delivery_time(
     callback: types.CallbackQuery, state: dispatcher.FSMContext, pass_state: bool = False,
 ):
     async with state.proxy() as data:
@@ -210,38 +205,36 @@ def register_product_states(dp: dispatcher.Dispatcher):
         cancel_handler, lambda callback: callback.data.lower() == "cancel", state="*")
 
     dp.register_message_handler(
-        save_product_name_go_to_shop_name,
+        save_product_name,
         lambda _: True,
         state=ProductForm.product_name)
     dp.register_message_handler(
-        save_shop_name_go_to_price,
+        save_shop_name,
         lambda _: True,
         state=ProductForm.shop_name)
     dp.register_message_handler(
-        save_price_go_to_product_url,
+        save_price,
         lambda _: True,
         state=ProductForm.price)
     dp.register_message_handler(
-        save_product_url_go_track_number,
+        save_product_url,
         lambda _: True,
         state=ProductForm.product_url)
     dp.register_message_handler(
-        save_track_number_go_to_delivery_date,
+        save_track_number,
         lambda _: True, state=ProductForm.track_number)
     dp.register_callback_query_handler(
-        pass_track_number_go_to_delivery_date,
+        pass_track_number,
         lambda callback: callback.data == "pass_track",
         state=ProductForm.track_number)
-
     dp.register_callback_query_handler(
-        save_delivery_date_go_to_delivery_time,
+        save_delivery_date,
         lambda callback: callback.data != "pass_date",
         state=ProductForm.delivery_date)
     dp.register_callback_query_handler(
-        save_delivery_time_and_finish,
+        save_delivery_time,
         lambda callback: callback.data != "pass_time",
         state=ProductForm.delivery_time)
-
     dp.register_callback_query_handler(
         pass_date_callback, lambda callback: callback.data == "pass_date",
         state=ProductForm.delivery_date)

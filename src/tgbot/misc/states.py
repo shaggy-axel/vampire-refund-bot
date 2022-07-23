@@ -2,11 +2,11 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 
 
 class ProductForm(StatesGroup):
+    track_number = State()
     product_name = State()
     shop_name = State()
     price = State()
     product_url = State()
-    track_number = State()
     delivery_date = State()
     delivery_time = State()
 
