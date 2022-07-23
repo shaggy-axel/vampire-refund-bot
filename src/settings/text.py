@@ -37,12 +37,12 @@ BUTTONS_TEXT = {
     "PROFILE": "👤 Профиль",
     "CONTACTS": "📘 FAQ",
 
-    "HAVE_NO_TRACK_NUMBER": "Address - Hold / Bun / Suspend",
+    "HAVE_NO_TRACK_NUMBER": "✖️ Нет трек-номера",
     "CHANGE_STATUS": "✅ Адрес использован",
     "GET_INFO_OK": countries_api.get,
-    "GET_INFO_NO_THANKS": "No, thanks",
-    "STATUS_USED": '✅ Succesful order!',
-    "STATUS_HOLD": '😡 Hold / Ban / Suspend',
+    "GET_INFO_NO_THANKS": "Нет, спасибо",
+    "STATUS_USED": '✅ Успешный заказ!',
+    "STATUS_HOLD": '✖️ Холд / Бан аккаунта',
 
     "ORDERS": "📦 Посылки",
     "CREATE_ADDRESS": "➕ Добавить адрес",
@@ -54,7 +54,7 @@ BUTTONS_TEXT = {
 }
 
 PRODUCT_FORM_TEXT = {
-    "ASK_FOR_TRACK_NUMBER": "Трек номер:",
+    "ASK_FOR_TRACK_NUMBER": "#️⃣ Укажите трек-номер и логистическую компанию (например, UPS 1Z54F78A0450293517):",
     "ASK_FOR_PRODUCT_NAME": "📦 Укажите наименование товара (например, MSI GeForce RTX 3080):",
     "ASK_FOR_SHOP_NAME": "🏬 Укажите название магазина (например, Amazon):",
     "ASK_FOR_PRICE": "💸 Укажите минимальную стоимость товара без налога (например, 850$):",
